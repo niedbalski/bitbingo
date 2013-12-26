@@ -81,3 +81,9 @@ class Configuration(BaseModel):
     player = ForeignKeyField(Player,
                              related_name="options",
                              null=True)
+
+
+models = ['Configuration', 'Token',
+          'Payment', 'Deposit',
+          'Player', 'Game',
+          'PlayerGame']
