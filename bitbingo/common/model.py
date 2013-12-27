@@ -4,8 +4,11 @@
 __author__ = 'Jorge Niedbalski R. <jnr@pyrosome.org>'
 
 from bitbingo.common.app import db
+
 from peewee import *
 from peewee import create_model_tables
+
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import datetime
 
@@ -17,9 +20,36 @@ class BaseModel(db.Model):
 
 class Player(db.Model):
     created = DateTimeField(default=datetime.datetime.now)
-    wallet = TextField()
+    wallet = TextField(index=True, unique=True)
     password = TextField(default=False)
     email = TextField(default=False)
+    active = BooleanField(default=False)
+
+    @classmethod
+    def login(cls, form):
+        customer = cls.select().where(cls.wallet == form.wallet.data).get()
+        if not cls.check_password(customer.password, form.password.data):
+            raise Exception('Invalid Password provided')
+        return customer
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    @classmethod
+    def check_password(cls, password, provided):
+        return check_password_hash(password, provided)
+
+    def is_authenticated(self):
+        return True
+
+    def get_id(self):
+        return self.id
+
+    def is_active(self):
+        return self.active
+
+    def is_anonymous(self):
+        return False
 
 
 class Game(db.Model):
