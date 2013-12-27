@@ -8,7 +8,7 @@ WTForms==1.0.5
 Werkzeug==0.9.4
 aniso8601==0.82
 argparse==1.2.1
--e git+git@github.com:niedbalski/bitbingo.git@0459c937aad1d4c659c01beb99e37fa503d19ea3#egg=bitbingo-dev
+-e git+git@github.com:niedbalski/bitbingo.git@3e3235e293a1496cb05d682ea5292de788b63e7d#egg=bitbingo-dev
 flask-peewee==0.6.5
 gunicorn==18.0
 ipython==1.1.0
