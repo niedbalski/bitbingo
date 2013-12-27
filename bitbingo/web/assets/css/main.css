@@ -1,0 +1,39 @@
+html {
+    margin-top: 10px;
+}
+
+.nav {
+    margin-top: 25px;
+}
+
+.achievements {
+    padding: 15px;
+}
+
+.winner {
+    font-family: "Helvetica Neue";
+    font-weight: bold;
+    font-stretch: condensed;
+    font-size: 60pt;
+    width: 100%;
+}
+
+.winners {
+    margin-left: 10px;
+}
+
+.ongoing {
+    height: auto;
+    z-index:10;
+    position: absolute;
+
+    top: 45%;
+    left: 35%;
+    font-weight: bold;
+    background: white;
+}
+
+
+.not-found {
+   height: 250px;
+}

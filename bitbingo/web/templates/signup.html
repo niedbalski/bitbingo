@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %} BitBingo: Signup {% endblock %}
+{% block content %}
+<form method="POST" action="/player/signup">
+    {{ form.hidden_tag() }}
+    {{ form.wallet.label }} {{ form.wallet(size=32) }}
+    {{ form.password.label }} {{ form.password(size=32) }}
+    {{ form.confirm.label }} {{ form.confirm(size=32) }}
+    {{ form.email.label }} {{ form.email(size=32) }}
+    <input type="submit" value="Go">
+</form>
+{% endblock %}

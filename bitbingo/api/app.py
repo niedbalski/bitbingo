@@ -14,7 +14,7 @@ api = Api(app, prefix="/api/v1")
 
 class GameResource(Resource):
     def get(self):
-        print "caca"
+        pass
 
 
 api.add_resource(GameResource, '/game')

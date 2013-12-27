@@ -1,333 +1,296 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" conent="width=device-width, initial-scale=1.0"></meta>
+{% extends "base.html" %}
+{% block title %} Bitcoin Bingo, making bitcoin billionaries every single day  {% endblock %}
+{% block badge %}
+   {% if player.logged_in %}
+      Current balance: <span class="badge"> BTC {{ player.balance }}  </span>
+   {% else %}
+     <span class="badge">Login or Signup</span>
+   {% endif %}
+{% endblock %}
+{% block content %}
+<div class="hidden-xs">
+<h1>
+  We are making <i class="fa fa-btc fa-5"></i>illionaires every single day.
+</h1>
+<p>
+  Put your wallet address, deposit some bitcoins, click on play and start earning bitcoins.
+</p>
+<p>
+<!--  <a class="btn" href="#">View details >></a> -->
+</p>
+</div>
+{% endblock %}
+{% block navigation %}
+   {% if player.logged_in %}
+<li>
+  <a href="#">Transactions</a>
+</li>
+<li>
+  <a href="#">Support</a>
+</li>
+   {% endif %}
+{% endblock %}
+{% block game %}
+<div class="ongoing">Next Roulette <span class="next-game">13:05:00 PM UTC</span></div>
+<div class="media" id="test">
+  <img src="./assets/img/roulette.png" alt="..." class="img-responsive center-block">
+</div>
+<div class="pull-right play-buttons">
+  <p>
+    <button type="button" class="btn btn-default btn-lg">Tutorial</button>
+    <button type="button" class="btn btn-primary btn-lg disabled">Play Now</button>
+  </p>
+</div>
+{% endblock %}
+{% block players %}
+<table class="table table-hover table-condensed table-striped winners">
+  <thead>
+    <tr>
+      <th>
+        #
+      </th>
+      <th>
+        Game
+      </th>
+      <th>
+        Amount
+      </th>
+      <th>
+        Status
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        1
+      </td>
+      <td>
+        TB - Monthly
+      </td>
+      <td>
+        01/04/2012
+      </td>
+      <td>
+        Default
+      </td>
+    </tr>
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
 
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <link href="/assets/css/bootstrap.css" rel="stylesheet"></link>
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
 
-    <script data-main="/assets/js/app" src="/assets/js/lib/require.js"></script>
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
 
-    <style>
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
 
-      html {
-      margin-top: 10px;
-      }
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
 
-      .nav {
-      margin-top: 25px;
-      }
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
 
-      .achievements {
-      padding: 15px;
-      }
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
 
-      .winner {
-      font-family: "Helvetica Neue";
-      font-weight: bold;
-      font-stretch: condensed;
-      font-size: 60pt;
-      width: 100%;
-      }
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
 
-      .winners {
-      margin-left: 10px;
-      }
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
 
-      .ongoing {
-      height: auto;
-      z-index:10;
-      position: absolute;
+    <tr class="active">
+      <td>
+        1
+      </td>
+      <td>
+        xdamagex
+      </td>
+      <td>
+        BTC 0.005
+      </td>
+      <td>
+        Paid
+      </td>
+    </tr>
 
-      top: 45%;
-      left: 35%;
-      font-weight: bold;
-      background: white;
-      }
+  </tbody>
+</table>
+<ul class="pagination">
+  <li>
+    <a href="#">Prev</a>
+  </li>
+  <li>
+    <a href="#">1</a>
+  </li>
+  <li>
+    <a href="#">2</a>
+  </li>
+  <li>
+    <a href="#">3</a>
+  </li>
+  <li>
+    <a href="#">4</a>
+  </li>
+  <li>
+    <a href="#">5</a>
+  </li>
+  <li>
+    <a href="#">Next</a>
+  </li>
+</ul>
 
-
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="row clearfix">
-	<div class="col-md-12 column">
-	  <h2>
-	    <i class="fa fa-btc fa-6"></i> BitBingo
-	  </h2>
-	  <ul class="nav nav-tabs">
-	    <li class="active">
-	      <a href="#">Home</a>
-	    </li>
-	    <li>
-	      <a href="#">Transactions</a>
-	    </li>
-	    <li>
-	      <a href="#">Support</a>
-	    </li>
-	  </ul>
-	  <a class="pull-right" href="#">Your current balance <span class="badge">BTC 42.00</span></a>
-	  <div class="row clearfix">
-	    <div class="col-md-12 column">
-	      <h1>
-		We are making <i class="fa fa-btc fa-5"></i>illionaires every single day.
-	      </h1>
-	      <p>
-		Put your wallet address, deposit some bitcoins, click on play and start earning bitcoins. Dead simple.
-	      </p>
-	      <p>
-		<a class="btn" href="#">View details >></a>
-	      </p>
-	    </div>
-	  </div>
-	  <div class="row clearfix">
-	    <div class="col-md-8 column">
-	      <div class="ongoing">Next Roulette <span class="next-game">13:05:00 PM UTC</span></div>
-
-	      <div class="media" id="test">
-		<img src="./assets/img/roulette.png" alt="..." class="img-responsive center-block">
-	      </div>
-	      <div class="pull-right play-buttons">
-		<p>
-		  <button type="button" class="btn btn-default btn-lg">Tutorial</button>
-		  <button type="button" class="btn btn-primary btn-lg disabled">Play Now</button>
-		</p>
-	      </div>
-	    </div>
-	    <div class="col-md-4 column">
-	      <table class="table table-hover table-condensed table-striped winners">
-		<thead>
-		  <tr>
-		    <th>
-		      #
-		    </th>
-		    <th>
-		      Game
-		    </th>
-		    <th>
-		      Amount
-		    </th>
-		    <th>
-		      Status
-		    </th>
-		  </tr>
-		</thead>
-		<tbody>
-		  <tr>
-		    <td>
-		      1
-		    </td>
-		    <td>
-		      TB - Monthly
-		    </td>
-		    <td>
-		      01/04/2012
-		    </td>
-		    <td>
-		      Default
-		    </td>
-		  </tr>
-		  <tr class="active">
-		    <td>
-		      1
-		    </td>
-		    <td>
-		      xdamagex
-		    </td>
-		    <td>
-		      BTC 0.005
-		    </td>
-		    <td>
-		      Paid
-		    </td>
-		  </tr>
-		  <tr class="active">
-		    <td>
-		      1
-		    </td>
-		    <td>
-		      xdamagex
-		    </td>
-		    <td>
-		      BTC 0.005
-		    </td>
-		    <td>
-		      Paid
-		    </td>
-		  </tr>
-		  <tr class="active">
-		    <td>
-		      1
-		    </td>
-		    <td>
-		      xdamagex
-		    </td>
-		    <td>
-		      BTC 0.005
-		    </td>
-		    <td>
-		      Paid
-		    </td>
-		  </tr>
-		  <tr class="active">
-		    <td>
-		      1
-		    </td>
-		    <td>
-		      xdamagex
-		    </td>
-		    <td>
-		      BTC 0.005
-		    </td>
-		    <td>
-		      Paid
-		    </td>
-		  </tr>
-		  <tr class="active">
-		    <td>
-		      1
-		    </td>
-		    <td>
-		      xdamagex
-		    </td>
-		    <td>
-		      BTC 0.005
-		    </td>
-		    <td>
-		      Paid
-		    </td>
-		  </tr>
-		  <tr class="active">
-		    <td>
-		      1
-		    </td>
-		    <td>
-		      xdamagex
-		    </td>
-		    <td>
-		      BTC 0.005
-		    </td>
-		    <td>
-		      Paid
-		    </td>
-		  </tr>
-		  <tr class="active">
-		    <td>
-		      1
-		    </td>
-		    <td>
-		      xdamagex
-		    </td>
-		    <td>
-		      BTC 0.005
-		    </td>
-		    <td>
-		      Paid
-		    </td>
-		  </tr>
-		  <tr class="success">
-		    <td>
-		      2
-		    </td>
-		    <td>
-		      TB - Monthly
-		    </td>
-		    <td>
-		      02/04/2012
-		    </td>
-		    <td>
-		      Declined
-		    </td>
-		  </tr>
-		  <tr class="warning">
-		    <td>
-		      3
-		    </td>
-		    <td>
-		      TB - Monthly
-		    </td>
-		    <td>
-		      03/04/2012
-		    </td>
-		    <td>
-		      Pending
-		    </td>
-		  </tr>
-		  <tr class="danger">
-		    <td>
-		      4
-		    </td>
-		    <td>
-		      TB - Monthly
-		    </td>
-		    <td>
-		      04/04/2012
-		    </td>
-		    <td>
-		      Call in to confirm
-		    </td>
-		  </tr>
-		  <tr class="danger">
-		    <td>
-		      4
-		    </td>
-		    <td>
-		      TB - Monthly
-		    </td>
-		    <td>
-		      04/04/2012
-		    </td>
-		    <td>
-		      Call in to confirm
-		    </td>
-		  </tr>
-		  <tr class="danger">
-		    <td>
-		      4
-		    </td>
-		    <td>
-		      TB - Monthly
-		    </td>
-		    <td>
-		      04/04/2012
-		    </td>
-		    <td>
-		      Call in to confirm
-		    </td>
-		  </tr>
-
-		</tbody>
-	      </table>
-	      <ul class="pagination">
-		<li>
-		  <a href="#">Prev</a>
-		</li>
-		<li>
-		  <a href="#">1</a>
-		</li>
-		<li>
-		  <a href="#">2</a>
-		</li>
-		<li>
-		  <a href="#">3</a>
-		</li>
-		<li>
-		  <a href="#">4</a>
-		</li>
-		<li>
-		  <a href="#">5</a>
-		</li>
-		<li>
-		  <a href="#">Next</a>
-		</li>
-	      </ul>
-	    </div>
-	  </div>
-	  <hr>
-	  <address> <strong>Bitcoin Games, LLC.</strong><br /> 2909 Vitacura Ave, Suite 215<br /> Santiago, RM 94107<br /> <abbr title="Phone">P:</abbr> (123) 456-7890</address>
-	</div>
-      </div>
-    </div>
-  </body>
-</html>
+{% endblock %}

@@ -7,7 +7,7 @@ define(["jquery",
     $(document).ready(function() {
 
         //Rubberduck the world!! cuek, cuek, cueeeeeeeeeeeeeeeeeeeeeeek
-        window['RubberDuck'] = RubberDuck;
+        //window['RubberDuck'] = RubberDuck;
 
         var app = new RubberDuck.app({
             name: 'BitBingoApp',

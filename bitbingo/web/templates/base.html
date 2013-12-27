@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" conent="width=device-width, initial-scale=1.0"></meta>
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- stylesheets -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap.css" rel="stylesheet"></link>
+    <link href="/assets/css/main.css" rel="stylesheet"></link>
+
+    <!-- Load the main Bitbingo Rubberduck application -->
+    <script data-main="/assets/js/app" src="/assets/js/lib/require.js"></script>
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="row clearfix">
+	<div class="col-md-12 column">
+	  <h2>
+	    <i class="fa fa-btc fa-6"></i> BitBingo
+	  </h2>
+	  <ul class="nav nav-tabs">
+	    <li class="active">
+	      <a href="#">Home</a>
+	    </li>
+
+            {% block navigation %}
+            {% endblock %}
+	  </ul>
+	  <a class="pull-right" href="#">{% block badge %}{% endblock %}</a>
+	  <div class="row clearfix">
+	    <div class="col-md-12 column">
+              {% block content %}{% endblock %}
+	    </div>
+	  </div>
+	  <div class="row clearfix">
+	    <div class="col-md-8 column">
+              {% block game %}{% endblock %}
+	    </div>
+	    <div class="col-md-4 column">
+              {% block players %}{% endblock %}
+	    </div>
+	  </div>
+	  <hr>
+	  <address> <strong>Bitcoin Games, LLC.</strong><br /> 2909 Vitacura Ave, Suite 215<br /> Santiago, RM 94107<br /> <abbr title="Phone">P:</abbr> (123) 456-7890</address>
+	</div>
+      </div>
+    </div>
+  </body>
+</html>
