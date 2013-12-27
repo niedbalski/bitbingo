@@ -10,7 +10,7 @@ define(["jquery",
         window['RubberDuck'] = RubberDuck;
 
         var app = new RubberDuck.app({
-            name: 'TestApp',
+            name: 'BitBingoApp',
             path: 'assets/js/app/',
             controllers: [ 'test' ]
         });
