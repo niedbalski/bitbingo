@@ -1,34 +1,37 @@
 {% extends "base.html" %}
 {% block title %} Bitcoin Bingo, making bitcoin billionaries every single day  {% endblock %}
 {% block badge %}
-   {% if player.logged_in %}
-      Current balance: <span class="badge"> BTC {{ player.balance }}  </span>
-   {% else %}
-     <span class="badge">Login or Signup</span>
-   {% endif %}
+{% if player.is_authenticated() %}
+Current balance: <span class="badge"> BTC {{ player.balance }}  </span>
+{% else %}
+<a style="margin-top: 5px" class="badge pull-right" href="/player/login">Login or Signup</a>
+{% endif %}
 {% endblock %}
 {% block content %}
 <div class="hidden-xs">
-<h1>
-  We are making <i class="fa fa-btc fa-5"></i>illionaires every single day.
-</h1>
-<p>
-  Put your wallet address, deposit some bitcoins, click on play and start earning bitcoins.
-</p>
-<p>
-<!--  <a class="btn" href="#">View details >></a> -->
-</p>
+  <h1>
+    We are making <i class="fa fa-btc fa-5"></i>illionaires every single day.
+  </h1>
+  <p>
+    Put your wallet address, deposit some bitcoins, click on play and start earning bitcoins.
+  </p>
+  <p>
+    <!--  <a class="btn" href="#">View details >></a> -->
+  </p>
 </div>
 {% endblock %}
 {% block navigation %}
-   {% if player.logged_in %}
+{% if player.is_authenticated() %}
 <li>
-  <a href="#">Transactions</a>
+  <a href="/player/transactions">Transactions</a>
 </li>
 <li>
-  <a href="#">Support</a>
+  <a href="/player/support">Support</a>
 </li>
-   {% endif %}
+<li>
+  <a href="/player/logout">Logout</a>
+</li>
+{% endif %}
 {% endblock %}
 {% block game %}
 <div class="ongoing">Next Roulette <span class="next-game">13:05:00 PM UTC</span></div>

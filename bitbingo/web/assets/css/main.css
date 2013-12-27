@@ -33,7 +33,19 @@ html {
     background: white;
 }
 
+.login-form {
+    margin-top: 25px;
+}
+
+.login-form .btn-default {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.login-form label {
+    margin-top: 5px;
+}
 
 .not-found {
-   height: 250px;
+    height: 250px;
 }

@@ -2,31 +2,15 @@
 require.config({
     baseUrl: "/assets/js/lib",
     shim: {
-        'jquery.routes': {
+        'jquery.validator': {
             deps: [ 'jquery' ]
-        },
-
-        'jquery.model': {
-            deps: [ 'jquery' ]
-        },
-
-        'RubberDuck': {
-            requires: [ 'jquery',
-                        'jquery.routes',
-                        'jquery.model',
-                        'Hanblebars' ],
-
-            exports: 'RubberDuck'
-        },
+        }
     },
 
     paths: {
         'app': '../app',
         'jquery': "//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min",
-        'jquery.model': 'jquery.model.min',
-        'jquery.routes': 'jquery.routes',
-        'Handlebars': 'handlebars',
-        'RubberDuck': 'RubberDuck-0.1.7.min'
+        'jquery.validator': "//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.27/jquery.form-validator.min",
     }
 
 });

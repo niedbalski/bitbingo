@@ -1,22 +1,12 @@
 define(["jquery",
-        "jquery.model",
-        "jquery.routes",
-        "Handlebars",
-        "RubberDuck"], function($, model, routes, Handlebars, RubberDuck) {
+        "jquery.validator"], function($, validator) {
 
     $(document).ready(function() {
-
-        //Rubberduck the world!! cuek, cuek, cueeeeeeeeeeeeeeeeeeeeeeek
-        //window['RubberDuck'] = RubberDuck;
-
-        var app = new RubberDuck.app({
-            name: 'BitBingoApp',
-            path: 'assets/js/app/',
-            controllers: [ 'test' ]
-        });
-
-        app.done(function(app) {
-            app.run();
+        $.validate({
+            form: "#signup, #login",
+            validateOnBlur : false,
+            errorMessagePosition : 'top',
+            modules: 'security'
         });
     });
 
