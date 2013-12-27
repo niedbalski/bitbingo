@@ -5,6 +5,7 @@ __author__ = 'Jorge Niedbalski R. <jnr@pyrosome.org>'
 
 from bitbingo.common.app import db
 from peewee import *
+from peewee import create_model_tables
 
 import datetime
 
@@ -14,14 +15,14 @@ class BaseModel(db.Model):
         database = db
 
 
-class Player(BaseModel):
+class Player(db.Model):
     created = DateTimeField(default=datetime.datetime.now)
     wallet = TextField()
     password = TextField(default=False)
     email = TextField(default=False)
 
 
-class Game(BaseModel):
+class Game(db.Model):
     random = BigIntegerField()
     created = DateTimeField(default=datetime.datetime.now)
     scheduled_at = DateTimeField(default=datetime.timedelta(minutes=45))
@@ -31,12 +32,23 @@ class Game(BaseModel):
                              null=True)
 
 
-class PlayerGame(BaseModel):
+class Token(db.Model):
+    #Used to validate a deposit
+    is_expired = BooleanField(default=False)
+    created = DateTimeField(default=datetime.datetime.now)
+    value = TextField()
+
+    @classmethod
+    def generate_token(cls):
+        pass
+
+
+class PlayerGame(db.Model):
     player = ForeignKeyField(Player)
     game = ForeignKeyField(Game)
 
 
-class Deposit(BaseModel):
+class Deposit(db.Model):
     is_ready = BooleanField(default=False)
     created = DateTimeField(default=datetime.datetime.now)
     updated = DateTimeField(default=datetime.datetime.now)
@@ -50,7 +62,7 @@ class Deposit(BaseModel):
                             related_name="token")
 
 
-class Payment(BaseModel):
+class Payment(db.Model):
     paid = BooleanField(default=False)
     created = DateTimeField(default=datetime.datetime.now)
     value = DecimalField()
@@ -59,18 +71,7 @@ class Payment(BaseModel):
                              null=True)
 
 
-class Token(BaseModel):
-    #Used to validate a deposit
-    is_expired = BooleanField(default=False)
-    created = DateTimeField(default=datetime.datetime.now)
-    value = TextField()
-
-    @classmethod
-    def generate_token(cls):
-        pass
-
-
-class Configuration(BaseModel):
+class Configuration(db.Model):
     # payment_daily , False
     # payment_weekly, False
     # notify_all_by_email , True
@@ -83,7 +84,19 @@ class Configuration(BaseModel):
                              null=True)
 
 
-models = ['Configuration', 'Token',
-          'Payment', 'Deposit',
-          'Player', 'Game',
-          'PlayerGame']
+models = [Configuration, Token,
+          Payment, Deposit,
+          Player, Game,
+          PlayerGame]
+
+
+def setup_database():
+    try:
+        create_model_tables(models, fail_silently=True)
+    except Exception as ex:
+        raise
+    else:
+        return db
+
+
+db = setup_database()

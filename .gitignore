@@ -15,4 +15,6 @@ access.log
 tests/pinhole.db
 build/
 pinhole-cache/
+\#*#
+*.egg-info*
 
