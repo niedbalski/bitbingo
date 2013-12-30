@@ -2,46 +2,4 @@
 {% block title %} BitBingo: Login required {% endblock %}
 {% block initial%} Login on BitBingo! {% endblock %}
 {% block content %}
-<div class="row login-form">
-  <div class="col-sm-3 col-lg-3"></div>
-  <!--clearfix here-->
-  <div class="clearfix visible-sm"></div>
-  <div class="col-sm-5 col-lg-5">
-    <div class="ck form-group">
-      {% if invalid %}
-         <div class="form-error alert alert-danger"><strong>Invalid user credentials!</strong><br></div>
-      {% endif %}
-
-      <form method="POST" action="/player/login" id="login">
-        {{ form.hidden_tag() }}
-        {{ form.wallet.label }}
-        {{
-            form.wallet(size=32, class="form-control", **{
-               'data-validation': "length",
-               'data-validation-length': "min10",
-               'data-validation-error-msg': "Enter a valid bitcoin wallet"
-            })
-        }}
-        <span class="help-block hidden-xs"><i class="fa fa-arrow-right"></i> Your Bitcoin wallet address</span>
-        {{ form.password.label }}
-        {{
-            form.password(size=32, class="form-control", **{
-              'data-validation': "length",
-              'data-validation-length': "min8",
-              'data-validation-error-msg': "Enter a valid password"
-            })
-        }}
-        <span class="help-block hidden-xs">
-           <i class="fa fa-arrow-right"></i> Your BitBingo password
-        </span>
-
-        <p> {{ form.remember.label }} {{ form.remember() }} </p>
-        <input class="btn btn-default" type="submit" value="Login">
-        <p> Not yet registered? <a href="/player/signup">Signup now!</a></p>
-      </form>
-    </div>
-  </div>
-  <!--full with on responsive view-->
-  <div class="col-sm-2 col-lg-2"></div>
-</div>
 {% endblock %}

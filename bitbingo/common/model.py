@@ -53,13 +53,25 @@ class Player(db.Model):
 
 
 class Game(db.Model):
-    random = BigIntegerField()
+    random = BigIntegerField(null=True)
     created = DateTimeField(default=datetime.datetime.now)
     scheduled_at = DateTimeField(default=datetime.timedelta(minutes=45))
     is_finished = BooleanField(default=False)
+    bet_amount = BigIntegerField()
+
+    players = ForeignKeyField(Player,
+                              related_name="games",
+                              null=True)
+
     winner = ForeignKeyField(Player,
                              related_name="wins",
                              null=True)
+
+    @classmethod
+    def get_recent_bets(cls, limit=0):
+        return cls.select().where(
+            cls.is_finished == True).order_by(
+                cls.scheduled_at.desc()).limit(limit)
 
 
 class Token(db.Model):
@@ -71,11 +83,6 @@ class Token(db.Model):
     @classmethod
     def generate_token(cls):
         pass
-
-
-class PlayerGame(db.Model):
-    player = ForeignKeyField(Player)
-    game = ForeignKeyField(Game)
 
 
 class Deposit(db.Model):
@@ -116,8 +123,7 @@ class Configuration(db.Model):
 
 models = [Configuration, Token,
           Payment, Deposit,
-          Player, Game,
-          PlayerGame]
+          Player, Game]
 
 
 def setup_database():

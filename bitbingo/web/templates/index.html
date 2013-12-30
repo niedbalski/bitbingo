@@ -4,22 +4,62 @@
 {% if player.is_authenticated() %}
 Current balance: <span class="badge"> BTC {{ player.balance }}  </span>
 {% else %}
-<a style="margin-top: 5px" class="badge pull-right" href="/player/login">Login or Signup</a>
+<a style="margin-top: 5px" class="badge pull-right" href="/#signup">Login or Signup</a>
 {% endif %}
 {% endblock %}
-{% block content %}
-<div class="hidden-xs">
-  <h1>
-    We are making <i class="fa fa-btc fa-5"></i>illionaires every single day.
-  </h1>
-  <p>
-    Put your wallet address, deposit some bitcoins, click on play and start earning bitcoins.
-  </p>
-  <p>
-    <!--  <a class="btn" href="#">View details >></a> -->
-  </p>
+
+<script type="text/template" id="played-games">
+<table class="table table-hover table-condensed table-striped winners">
+  <thead>
+    <tr>
+      <th>Game</th>
+      <th>Winner</th>
+      <th>Amount</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% _.each(games, function(game) { %>
+    <tr>
+      <td><%= game.id %></td>
+      <td><%= game.winner %></td>
+      <td><%= game.amount %></td>
+      <td><%= game.scheduled_at %></td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
+</script>
+
+<script id="signup-form" type="text/html">
+<div class="row login-form">
+  <div class="col-sm-3 col-lg-3"></div>
+  <!--clearfix here-->
+  <div class="clearfix visible-sm"></div>
+
+  <div class="col-sm-5 col-lg-5">
+    <div class="ck form-group">
+      <form method="POST" action="/player/signup" id="signup">
+        <label for="wallet">Bitcoin Wallet address</label>
+        <input class="form-control" data-fields="wallet" id="wallet" name="wallet" size="32" type="text" value="">
+        <label for="password">New Password</label>
+        <input class="form-control" data-fields="password" id="password" name="password" size="32" type="password" value="">
+       <label for="confirmation">Repeat Password</label>
+       <input class="form-control" data-fields="confirmation" id="confirmation" name="confirmation" size="32" type="password" value="">
+       <label for="email">E-mail</label> <input class="form-control" data-fields="email" id="email" name="email" size="32" type="text" value="">
+        <input class="btn btn-default" type="submit" value="Signup">
+        <p> Already a player? <a href="/player/login"> Login here</a></p>
+      </form>
+    </div>
+  </div>
+  <!--full with on responsive view-->
+  <div class="col-sm-2 col-lg-2"></div>
 </div>
-{% endblock %}
+</script>
+
+
+
+{% block content %}{% endblock %}
 {% block navigation %}
 {% if player.is_authenticated() %}
 <li>
@@ -33,267 +73,5 @@ Current balance: <span class="badge"> BTC {{ player.balance }}  </span>
 </li>
 {% endif %}
 {% endblock %}
-{% block game %}
-<div class="ongoing">Next Roulette <span class="next-game">13:05:00 PM UTC</span></div>
-<div class="media" id="test">
-  <img src="./assets/img/roulette.png" alt="..." class="img-responsive center-block">
-</div>
-<div class="pull-right play-buttons">
-  <p>
-    <button type="button" class="btn btn-default btn-lg">Tutorial</button>
-    <button type="button" class="btn btn-primary btn-lg disabled">Play Now</button>
-  </p>
-</div>
-{% endblock %}
-{% block players %}
-<table class="table table-hover table-condensed table-striped winners">
-  <thead>
-    <tr>
-      <th>
-        #
-      </th>
-      <th>
-        Game
-      </th>
-      <th>
-        Amount
-      </th>
-      <th>
-        Status
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        1
-      </td>
-      <td>
-        TB - Monthly
-      </td>
-      <td>
-        01/04/2012
-      </td>
-      <td>
-        Default
-      </td>
-    </tr>
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-
-    <tr class="active">
-      <td>
-        1
-      </td>
-      <td>
-        xdamagex
-      </td>
-      <td>
-        BTC 0.005
-      </td>
-      <td>
-        Paid
-      </td>
-    </tr>
-
-  </tbody>
-</table>
-<ul class="pagination">
-  <li>
-    <a href="#">Prev</a>
-  </li>
-  <li>
-    <a href="#">1</a>
-  </li>
-  <li>
-    <a href="#">2</a>
-  </li>
-  <li>
-    <a href="#">3</a>
-  </li>
-  <li>
-    <a href="#">4</a>
-  </li>
-  <li>
-    <a href="#">5</a>
-  </li>
-  <li>
-    <a href="#">Next</a>
-  </li>
-</ul>
-
-{% endblock %}
+{% block game %}{% endblock %}
+{% block players %}{% endblock %}

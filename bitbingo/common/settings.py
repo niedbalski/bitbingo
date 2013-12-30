@@ -13,7 +13,7 @@ STATIC_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              '..', 'web', 'assets')
 
 DATABASE = {
-    'name': 'bitbingo-development.db',
+    'name': '/tmp/bitbingo-development.db',
     'engine': 'peewee.SqliteDatabase',
 }
 

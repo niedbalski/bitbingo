@@ -1,0 +1,98 @@
+[
+    {
+        "model": "Game",
+        "id": 0,
+        "random": 92235,
+        "is_finished": false,
+        "bet_amount": 794,
+        "scheduled_at": "1989-04-22 07:32:00.00"
+    },
+    {
+        "model": "Game",
+        "id": 1,
+        "random": 97110,
+        "is_finished": false,
+        "bet_amount": 501,
+        "scheduled_at": "2009-10-12 10:40:53.53"
+    },
+    {
+        "model": "Game",
+        "id": 2,
+        "random": 23481,
+        "is_finished": false,
+        "bet_amount": 711,
+        "scheduled_at": "2006-01-02 21:46:29.29"
+    },
+    {
+        "model": "Game",
+        "id": 3,
+        "random": 396777,
+        "is_finished": false,
+        "bet_amount": 361,
+        "scheduled_at": "1989-03-09 15:25:59.59"
+    },
+    {
+        "model": "Game",
+        "id": 4,
+        "random": 361542,
+        "is_finished": false,
+        "bet_amount": 335,
+        "scheduled_at": "1997-03-07 15:10:38.38"
+    },
+    {
+        "model": "Game",
+        "id": 5,
+        "random": 201650,
+        "is_finished": false,
+        "bet_amount": 713,
+        "scheduled_at": "1998-02-28 02:55:34.34"
+    },
+    {
+        "model": "Game",
+        "id": 6,
+        "random": 14837,
+        "is_finished": true,
+        "bet_amount": 220,
+        "scheduled_at": "2002-05-13 02:48:32.32"
+    },
+    {
+        "model": "Game",
+        "id": 7,
+        "random": 337139,
+        "is_finished": true,
+        "bet_amount": 673,
+        "scheduled_at": "1993-04-01 13:34:11.11"
+    },
+    {
+        "model": "Game",
+        "id": 8,
+        "random": 313610,
+        "is_finished": true,
+        "bet_amount": 647,
+        "scheduled_at": "1989-08-11 20:57:22.22"
+    },
+    {
+        "model": "Game",
+        "id": 9,
+        "random": 161416,
+        "is_finished": false,
+        "bet_amount": 192,
+        "scheduled_at": "2002-07-14 06:15:03.03"
+    },
+    {
+        "model": "Game",
+        "id": 10,
+        "random": 328977,
+        "is_finished": false,
+        "bet_amount": 103,
+        "scheduled_at": "1996-10-14 11:38:11.11"
+    },
+    {
+        "model": "Game",
+        "id": 11,
+        "random": 140424,
+        "is_finished": false,
+        "bet_amount": 808,
+        "scheduled_at": "2008-08-27 21:38:35.35"
+    }
+]

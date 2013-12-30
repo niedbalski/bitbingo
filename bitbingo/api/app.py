@@ -16,9 +16,42 @@ from flask.ext.restful import reqparse
 api = Api(app, prefix="/api/v1")
 
 
-class GameResource(Resource):
+#TODO: move this to a helper class
+def marshal_and_count(n, r, f=None, **other):
+    if not isinstance(r, list):
+        r = [r]
+
+    if f:
+        r = map(lambda q: marshal(q, f), r)
+
+    d = dict({'count': len(r), '%s' % n: r})
+    for k, v in other.items():
+        d.update({k: v})
+    return d
+
+
+class ResultsResource(Resource):
+
+    #TODO: move this to a fields class
+    results_fields = {
+        'id': fields.Integer,
+        'random': fields.Float,
+        'created': fields.DateTime,
+        'scheduled_at': fields.DateTime,
+        'winner': fields.String,
+        'amount': fields.Float(attribute='bet_amount'),
+        'players': fields.Float
+    }
+
     def get(self):
-        pass
+        parser = reqparse.RequestParser()
+        parser.add_argument("limit", type=int, default=0)
+
+        args = parser.parse_args()
+        return marshal_and_count('results',
+                                 [bet for bet in
+                                  Game.get_recent_bets(limit=args.get("limit", 0))],
+                                 f=self.results_fields)
 
 
 class WalletValidationResource(Resource):
@@ -59,4 +92,4 @@ class WalletValidationResource(Resource):
         }
 
 api.add_resource(WalletValidationResource, '/wallet')
-api.add_resource(GameResource, '/game')
+api.add_resource(ResultsResource, '/result')

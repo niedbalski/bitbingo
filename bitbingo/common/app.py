@@ -40,4 +40,3 @@ def application(environ=None, start_response=None):
         return app(environ, start_response)
 
 
-application = application()
