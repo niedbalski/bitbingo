@@ -31,6 +31,7 @@ define(["jquery",
 
         var GamesView = Backbone.View.extend({
             el: $("#players"),
+
             template: _.template($('#played-games').html()),
 
             initialize: function() {
@@ -48,56 +49,99 @@ define(["jquery",
 
             render: function() {
                 $('#content').empty();
-
                 $(this.el).empty();
                 $(this.el).html(this.template({games: this.collection.toJSON()}));
             }
+
         });
 
         var Player = Backbone.Model.extend({
-            url: '/api/v1/player'
+            url: '/api/v1/player',
+            schema: {
+                wallet: {
+                    type: "Text",
+                    validators: [ 'required' ]
+                },
+                password: {
+                    type: "Password",
+                    validators: [ 'required' ]
+                },
+                confirmation: {
+                    type: "Password",
+                    validators: [ 'required', function(value, form) {
+                        errs = {};
+                        if ( value != form.password ) {
+                            errs = {
+                                type: "confirmation",
+                                message: "Password confirmation doesn't match"
+                            }
+                        }
+                        if ( !_.isEmpty(errs) ) return errs;
+                    } ]
+                },
+                email: {
+                    type: "Text",
+                    validators: [ 'email' ]
+                }
+            }
         });
 
         var SignupView = Backbone.View.extend({
-
             el: $('#content'),
 
             events: {
-                "click #signup-submit": "onSubmit"
-            },
-
-            onSubmit: function(event) {
-                event.preventDefault();
-                var errors = this.form.validate();
-
-                console.log(this.form.getValue());
-                console.log(errors);
-
-                if(errors.length > 0) {
-                    _.each(errors, function(message, field) {
-                        console.log(message, field);
-                    });
-                }
+                "click #signup-submit": "submit"
             },
 
             initialize: function() {
-                this.render();
+                var self = this;
+
+                _(this).bindAll('submit', 'render');
+
+                this.player = new Player().fetch()
+                this.player.success(function() {
+                    router.navigate('', {trigger: true});
+                });
+
+                this.player.error(function() {
+                    self.render();
+                });
             },
 
             render: function() {
-                _(this).bindAll('onSubmit');
-
                this.form = new Backbone.Form({
-                   template: _.template($("#signup-form").html()),
-                   model: new Player()
-                }).render();
-
-                console.log(this.form);
+                   model: new Player(),
+                   template: _.template($('#signup-form').html()),
+                   fieldClass: 'form-control'
+                });
 
                 $('#players').empty();
 
                 $(this.el).empty();
                 $(this.el).html(this.form.render().el);
+            },
+
+            submit: function(event) {
+                event.preventDefault();
+
+                var errors = this.form.commit();
+                var self = this;
+
+                if(_.isEmpty(errors) || _.isNull(errors) || _.isUndefined(errors)) {
+                    var player = this.form.model.save();
+
+                    player.success(function(model, response) {
+                        router.navigate('', {trigger: true});
+                    });
+
+                    player.error(function(response) {
+                        var fields = JSON.parse(response.responseJSON.message)
+                        if ( !_.isEmpty(fields) ) {
+                            self.form.fields[fields.field].setError(fields.value);
+                        }
+                    });
+
+                }
             }
         });
 
@@ -105,7 +149,16 @@ define(["jquery",
             el: $('#content'),
 
             initialize: function() {
-                this.render();
+                var self = this;
+
+                this.player = new Player().fetch()
+                this.player.success(function() {
+                    router.navigate('', {trigger: true});
+                });
+
+                this.player.error(function() {
+                    self.render();
+                });
             },
 
             render: function() {
@@ -129,15 +182,12 @@ define(["jquery",
                         collection: new Games()
                     });
                 },
-
                 'signup': function() {
                     new SignupView();
                 },
-
                 'login': function() {
                     new LoginView();
                 }
-
             }
         });
 

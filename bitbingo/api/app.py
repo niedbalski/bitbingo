@@ -4,13 +4,18 @@
 __author__ = 'Jorge Niedbalski R. <jnr@pyrosome.org>'
 
 import re
+import json
 
 from bitbingo.common.model import Game, Player
 from bitbingo.common.app import app
 
+from flask.ext.login import (login_required, current_user, login_user,
+                             logout_user)
+
 from flask.ext.restful import (Resource, Api, marshal_with, fields,
                                marshal_with,
                                marshal, abort)
+
 from flask.ext.restful import reqparse
 
 api = Api(app, prefix="/api/v1")
@@ -28,6 +33,90 @@ def marshal_and_count(n, r, f=None, **other):
     for k, v in other.items():
         d.update({k: v})
     return d
+
+
+class FieldValueError(ValueError):
+
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+        ValueError.__init__(self)
+
+    def __str__(self):
+        return json.dumps({
+            'field': self.name,
+            'value': self.value
+        })
+
+
+def wallet_is_valid(value, name, *args):
+    wallet_regex = '^[13][1-9A-HJ-NP-Za-km-z]{26,33}'
+
+    if not re.match(wallet_regex, value):
+        raise FieldValueError(name,
+                              "Bitcoin wallet format is incorrect")
+
+    if Player.select().where(Player.wallet == value).count() > 0:
+        raise FieldValueError(name,
+                              "Bitcoin wallet already is used by another user")
+
+    return value
+
+
+@app.route('/logged')
+@marshal_with({'logged': fields.String})
+def is_logged():
+    return {'logged_in': str(current_user.is_authenticated())}
+
+
+class PlayerResource(Resource):
+
+    player_fields = {
+        'id': fields.Integer,
+        'created': fields.DateTime,
+        'logged': fields.Boolean
+    }
+
+    @marshal_with(player_fields)
+    def get(self):
+        if not current_user.is_authenticated():
+            return abort(403)
+        return current_user
+
+    @marshal_with(player_fields)
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("wallet",
+                            type=wallet_is_valid,
+                            required=True)
+
+        parser.add_argument("password",
+                            type=str,
+                            required=True)
+
+        parser.add_argument("confirmation",
+                            type=str,
+                            required=True)
+
+        parser.add_argument("email",
+                            type=str,
+                            default=None,
+                            required=False)
+
+        args = parser.parse_args()
+
+        player = Player()
+        player.wallet = args.get('wallet')
+        player.set_password(args.get('password'))
+
+        player.email = args.get('email')
+        player.active = True
+
+        player.save()
+        login_user(player, remember=True)
+
+        return player
 
 
 class ResultsResource(Resource):
@@ -53,43 +142,5 @@ class ResultsResource(Resource):
                                   Game.get_recent_bets(limit=args.get("limit", 0))],
                                  f=self.results_fields)
 
-
-class WalletValidationResource(Resource):
-
-    wallet_validation = {
-        'valid': fields.Boolean,
-        'message': fields.String
-    }
-
-    wallet_regex = '^[13][1-9A-HJ-NP-Za-km-z]{26,33}'
-
-    @marshal_with(wallet_validation)
-    def post(self):
-        #@Todo: move this to a parameters class
-        parser = reqparse.RequestParser()
-        parser.add_argument('wallet',
-                            type=str,
-                            required=True,
-                            help="Specify wallet parameter")
-
-        args = parser.parse_args()
-        wallet = args.get('wallet')
-
-        valid_address = not Player.select().where(
-            Player.wallet == wallet).count() > 0
-
-        message = "Wallet is OK"
-        if not valid_address:
-            message = "Wallet is already in use by another user"
-
-        if not re.match(self.wallet_regex, wallet):
-            message = "Invalid bitcoin wallet address"
-            valid_address = False
-
-        return {
-            'valid': valid_address,
-            'message': message
-        }
-
-api.add_resource(WalletValidationResource, '/wallet')
 api.add_resource(ResultsResource, '/result')
+api.add_resource(PlayerResource, '/player')
