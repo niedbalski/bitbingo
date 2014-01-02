@@ -27,11 +27,11 @@ class Player(db.Model):
     balance = DecimalField(default=0.0)
 
     @classmethod
-    def login(cls, form):
-        customer = cls.select().where(cls.wallet == form.wallet.data).get()
-        if not cls.check_password(customer.password, form.password.data):
-            raise Exception('Invalid Password provided')
-        return customer
+    def login(cls, wallet, password):
+        player = cls.select().where(cls.wallet == wallet).get()
+        if not cls.check_password(player.password, password):
+            raise ValueError('Invalid Password provided')
+        return player
 
     def set_password(self, password):
         self.password = generate_password_hash(password)

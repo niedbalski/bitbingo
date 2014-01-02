@@ -64,10 +64,34 @@ def wallet_is_valid(value, name, *args):
     return value
 
 
-@app.route('/logged')
-@marshal_with({'logged': fields.String})
-def is_logged():
-    return {'logged_in': str(current_user.is_authenticated())}
+class AuthResource(Resource):
+
+    player_fields = {
+        'id': fields.Integer,
+        'created': fields.DateTime,
+        'wallet': fields.String
+    }
+
+    @marshal_with(player_fields)
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("wallet",
+                            type=str,
+                            required=True)
+
+        parser.add_argument("password",
+                            type=str,
+                            required=True)
+
+        args = parser.parse_args()
+
+        try:
+            player = Player.login(args.get('wallet'), args.get('password'))
+        except:
+            return abort(404, message="Invalid provided credentials")
+
+        login_user(player, remember=True)
+        return player
 
 
 class PlayerResource(Resource):
@@ -146,3 +170,5 @@ class ResultsResource(Resource):
 
 api.add_resource(ResultsResource, '/result')
 api.add_resource(PlayerResource, '/player')
+api.add_resource(AuthResource, '/player/login',
+                 methods=['POST', 'DELETE'])

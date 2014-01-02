@@ -197,28 +197,26 @@
     <script id="login-form" type="text/html">
       <div class="row login">
         <div class="col-sm-3 col-lg-3"></div>
+
         <!--clearfix here-->
         <div class="clearfix visible-sm"></div>
-        <div class="col-sm-5 col-lg-5">
+        <div class="col-sm-6 col-lg-6">
           <div class="ck form-group">
             <form method="POST" id="login">
-              <label for="wallet">Bitcoin Wallet address</label>
-              <input class="form-control" data-validation="length" data-validation-error-msg="Enter a valid bitcoin wallet" data-validation-length="min10" id="wallet" name="wallet" size="32" type="text" value="">
-              <span class="help-block hidden-xs"><i class="fa fa-arrow-right"></i> Your Bitcoin wallet address</span>
-              <label for="password">Password</label>
-              <input class="form-control" data-validation="length" data-validation-error-msg="Enter a valid password" data-validation-length="min8" id="password" name="password" size="32" type="password" value="">
-              <span class="help-block hidden-xs">
-                <i class="fa fa-arrow-right"></i> Your BitBingo password
-              </span>
-
-              <p> <label for="remember">Remember Me</label> <input id="remember" name="remember" type="checkbox" value="y"> </p>
-              <input class="btn btn-default" type="submit" value="Login">
-              <p> Not yet registered? <a href="/#signup">Signup now!</a></p>
+              <div data-fields="wallet">
+              </div>
+              <div data-fields="password">
+              </div>
+              <input class="pull-right btn btn-default" id="login-submit" type="submit" value="Login">
             </form>
+            <p>  Not yet registered?<a href="/#signup"> Signup now!</a></p>
+
           </div>
         </div>
+
         <!--full with on responsive view-->
         <div class="col-sm-2 col-lg-2"></div>
+
       </div>
     </script>
 

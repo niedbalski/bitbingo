@@ -35,26 +35,67 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
     views.Login = Backbone.View.extend({
         el: $('#content'),
 
-        initialize: function() {
-            _(this).bindAll('render');
+        events: {
+            "click #login-submit": "submit"
         },
 
-        render: function(player) {
+        initialize: function() {
+            _(this).bindAll('render', 'submit');
+        },
+
+        render: function(controller, player) {
+
+            this.controller = controller;
+
+            _(this).bindAll('submit');
 
             this.form = new Backbone.Form({
+                fieldClass: 'form-control',
                 template: _.template($("#login-form").html()),
-                model: player
+                //Schema
+                schema: {
+                    wallet: {
+                        type:'Text',
+                        validators: ['required']
+                    },
+                    password: {
+                        type: 'Password',
+                        validators: ['required']
+                    }
+                }
             });
 
             $('#players').empty();
 
             $(this.el).empty();
             $(this.el).html(this.form.render().el);
+        },
+
+        submit: function(event) {
+            event.preventDefault();
+
+            var errors = this.form.validate();
+            var self = this;
+
+            if(_.isEmpty(errors) || _.isNull(errors) || _.isUndefined(errors)) {
+                $.ajax({
+                    url: '/api/v1/player/login',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: this.form.getValue()
+                }).done(function() {
+                    self.controller.router.navigate('', {trigger: true});
+                }).fail(function(){
+                    console.warn('Login Error');
+                    self.form.fields['password'].setError("Invalid provided credentials. Try again");
+                });
+
+            }
         }
+
     });
 
     views.Signup = Backbone.View.extend({
-
         el: $('#content'),
 
         events: {
