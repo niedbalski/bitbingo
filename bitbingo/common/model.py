@@ -24,6 +24,7 @@ class Player(db.Model):
     password = TextField(default=False)
     email = TextField(default=False)
     active = BooleanField(default=False)
+    balance = DecimalField(default=0.0)
 
     @classmethod
     def login(cls, form):
@@ -57,7 +58,7 @@ class Game(db.Model):
     created = DateTimeField(default=datetime.datetime.now)
     scheduled_at = DateTimeField(default=datetime.timedelta(minutes=45))
     is_finished = BooleanField(default=False)
-    bet_amount = BigIntegerField()
+    amount = DecimalField(default=0.0)
 
     players = ForeignKeyField(Player,
                               related_name="games",
@@ -86,10 +87,10 @@ class Token(db.Model):
 
 
 class Deposit(db.Model):
-    is_ready = BooleanField(default=False)
+    paid = BooleanField(default=False)
     created = DateTimeField(default=datetime.datetime.now)
     updated = DateTimeField(default=datetime.datetime.now)
-    value = DecimalField()
+    amount = DecimalField(default=0)
     confirmations = IntegerField(default=0)
     transaction_hash = TextField()
     input_transaction_hash = TextField()
@@ -102,10 +103,45 @@ class Deposit(db.Model):
 class Payment(db.Model):
     paid = BooleanField(default=False)
     created = DateTimeField(default=datetime.datetime.now)
-    value = DecimalField()
+    amount = DecimalField(default=0)
     player = ForeignKeyField(Player,
                              related_name="payments",
                              null=True)
+
+
+class Transaction(db.Model):
+    kind = TextField(default='payment', choices=[
+        ('payment', 'Payment'), ('deposit', 'Deposit')])
+    amount = DecimalField(default=0.0)
+    status = TextField()
+    created = DateTimeField()
+
+    payment = ForeignKeyField(Payment, related_name="transactions", null=True)
+    deposit = ForeignKeyField(Deposit, related_name="transactions", null=True)
+
+    @classmethod
+    def log_payment(cls, payment):
+        obj = cls()
+        obj.kind = 'payment'
+        obj.amount = payment.amount
+        obj.status = payment.paid
+
+        obj.transactions.append(obj)
+
+        with db.transaction():
+                obj.save()
+
+    @classmethod
+    def log_deposit(cls, deposit):
+        obj = cls()
+        obj.kind = 'deposit'
+        obj.amount = deposit.amount
+        obj.status = deposit.paid
+
+        obj.transactions.append(obj)
+
+        with db.transaction():
+                obj.save()
 
 
 class Configuration(db.Model):

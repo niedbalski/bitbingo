@@ -12,6 +12,7 @@ from flask.ext.login import LoginManager
 from importlib import import_module
 
 app = Flask(__name__, static_url_path="/assets")
+
 app.config.from_object("bitbingo.common.settings")
 app.config.from_envvar("BITBINGO_SETTINGS", silent=True)
 

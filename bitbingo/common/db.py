@@ -36,5 +36,5 @@ def load_fixture(*args, **kwargs):
 
 
 @load_fixture('initial', rollback=False)
-def initial_fixture(objects):
-    print len(objects), objects
+def initial(objects):
+    print("Stored: %d - %s" % (len(objects), objects))

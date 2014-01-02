@@ -6,6 +6,3 @@ __author__ = 'Jorge Niedbalski R. <jnr@pyrosome.org>'
 from bitbingo.common.app import application
 
 application = application()
-
-
-

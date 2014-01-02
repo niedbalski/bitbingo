@@ -75,7 +75,7 @@ class PlayerResource(Resource):
     player_fields = {
         'id': fields.Integer,
         'created': fields.DateTime,
-        'logged': fields.Boolean
+        'wallet': fields.String
     }
 
     @marshal_with(player_fields)
@@ -128,18 +128,20 @@ class ResultsResource(Resource):
         'created': fields.DateTime,
         'scheduled_at': fields.DateTime,
         'winner': fields.String,
-        'amount': fields.Float(attribute='bet_amount'),
+        'amount': fields.Float,
         'players': fields.Float
     }
 
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument("limit", type=int, default=0)
-
         args = parser.parse_args()
+
+        bets = [bet for bet in Game.get_recent_bets(
+            limit=args.get("limit", 0))]
+
         return marshal_and_count('results',
-                                 [bet for bet in
-                                  Game.get_recent_bets(limit=args.get("limit", 0))],
+                                 bets,
                                  f=self.results_fields)
 
 api.add_resource(ResultsResource, '/result')

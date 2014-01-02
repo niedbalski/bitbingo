@@ -18,5 +18,7 @@ setup(
         "Development Status :: 3 - Alpha",
     ],
     entry_points = """
+    [console_scripts]
+    init-db=bitbingo.common.db:initial
     """
 )

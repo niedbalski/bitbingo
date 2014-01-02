@@ -2,68 +2,16 @@
 {% block title %} Bitcoin Bingo, making bitcoin billionaries every single day  {% endblock %}
 {% block badge %}
 {% if player.is_authenticated() %}
-Current balance: <span class="badge"> BTC {{ player.balance }}  </span>
+Current balance: <span class="badge"> {{ player.balance }} BTC </span>
 {% else %}
 <a style="margin-top: 5px" class="badge pull-right" href="/#signup">Login or Signup</a>
 {% endif %}
 {% endblock %}
-
-<script type="text/template" id="played-games">
-<table class="table table-hover table-condensed table-striped winners">
-  <thead>
-    <tr>
-      <th>Game</th>
-      <th>Winner</th>
-      <th>Amount</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% _.each(games, function(game) { %>
-    <tr>
-      <td><%= game.id %></td>
-      <td><%= game.winner %></td>
-      <td><%= game.amount %></td>
-      <td><%= game.scheduled_at %></td>
-    </tr>
-    <% }); %>
-  </tbody>
-</table>
-</script>
-
-<script id="signup-form" type="text/html">
-<div class="row login-form">
-  <div class="col-sm-3 col-lg-3"></div>
-  <!--clearfix here-->
-  <div class="clearfix visible-sm"></div>
-
-  <div class="col-sm-5 col-lg-5">
-    <div class="ck form-group">
-      <form method="POST" action="/player/signup" id="signup">
-        <label for="wallet">Bitcoin Wallet address</label>
-        <input class="form-control" data-fields="wallet" id="wallet" name="wallet" size="32" type="text" value="">
-        <label for="password">New Password</label>
-        <input class="form-control" data-fields="password" id="password" name="password" size="32" type="password" value="">
-       <label for="confirmation">Repeat Password</label>
-       <input class="form-control" data-fields="confirmation" id="confirmation" name="confirmation" size="32" type="password" value="">
-       <label for="email">E-mail</label> <input class="form-control" data-fields="email" id="email" name="email" size="32" type="text" value="">
-        <input class="btn btn-default" type="submit" value="Signup">
-        <p> Already a player? <a href="/player/login"> Login here</a></p>
-      </form>
-    </div>
-  </div>
-  <!--full with on responsive view-->
-  <div class="col-sm-2 col-lg-2"></div>
-</div>
-</script>
-
-
-
 {% block content %}{% endblock %}
 {% block navigation %}
 {% if player.is_authenticated() %}
 <li>
-  <a href="/player/transactions">Transactions</a>
+  <a href="/#transactions">Transactions</a>
 </li>
 <li>
   <a href="/player/support">Support</a>

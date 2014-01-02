@@ -141,13 +141,13 @@ class Transactions(MethodView):
 
 
 #Routes for players
-app.add_url_rule('/player/signup',
-                 view_func=Signup.as_view('player.signup'),
-                 methods=['GET', 'POST'])
+# app.add_url_rule('/player/signup',
+#                  view_func=Signup.as_view('player.signup'),
+#                  methods=['GET', 'POST'])
 
-app.add_url_rule('/player/login',
-                 view_func=Login.as_view('player.login'),
-                 methods=['GET', 'POST'])
+# app.add_url_rule('/player/login',
+#                  view_func=Login.as_view('player.login'),
+#                  methods=['GET', 'POST'])
 
 app.add_url_rule('/player/logout',
                  view_func=Logout.as_view('player.logout'))
