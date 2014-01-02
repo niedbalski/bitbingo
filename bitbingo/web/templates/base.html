@@ -210,7 +210,6 @@
               <input class="pull-right btn btn-default" id="login-submit" type="submit" value="Login">
             </form>
             <p>  Not yet registered?<a href="/#signup"> Signup now!</a></p>
-
           </div>
         </div>
 
@@ -222,7 +221,7 @@
 
     <!-- Signup form -->
     <script id="signup-form" type="text/html">
-      <div class="row signup-form">
+      <div class="row signup">
         <div class="col-sm-3 col-lg-3"></div>
         <!--clearfix here-->
         <div class="clearfix visible-sm"></div>
@@ -231,9 +230,11 @@
             <form method="POST" id="signup">
               <div data-fields="wallet,password,confirmation"></div>
               <div data-fields="email"></div>
-              <input class="center-block btn btn-default" id="signup-submit" type="submit" value="Signup">
-              <p class="center-block"> Already a player? <a href="/#login"> Login here</a></p>
+              <input class="pull-right btn btn-default" id="signup-submit" type="submit" value="Signup">
             </form>
+
+            <p style="margin-top: 15px"> Already a player? <a href="/#login"> Login here</a></p>
+
           </div>
         </div>
         <!--full with on responsive view-->
@@ -260,7 +261,7 @@
               <div id="content">{% block content %}{% endblock %}</div>
 	    </div>
 	  </div>
-	  <div class="row clearfix">
+	  <div class="row clearfix game-container">
 	    <div class="col-md-8 column">
               <div id="game">{% block game %}{% endblock %}</div>
 	    </div>

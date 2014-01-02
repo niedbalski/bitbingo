@@ -46,6 +46,20 @@ html {
     margin-top: 5px;
 }
 
+.login {
+    height: 300px;
+    margin-top:35px;
+}
+
+.signup {
+    height: 300px;
+    margin-top:35px;
+}
+
+.game-container {
+    margin-top: 35px;
+}
+
 .not-found {
     height: 250px;
 }

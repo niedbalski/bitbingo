@@ -69,9 +69,9 @@ define(['backbone', 'underscore', 'jquery', 'app/views', 'app/models'],
                     handler: this.index
                 },
 
-                'required': {
+                'transactions': {
                     loginRequired: true,
-                    handler: this.private
+                    handler: this.transactions
                 },
 
                 'login': {
@@ -85,13 +85,13 @@ define(['backbone', 'underscore', 'jquery', 'app/views', 'app/models'],
                 },
 
                 "*actions" : {
-                    loginRequired: false,
-                    handler: this.index
+                     loginRequired: false,
+                     handler: this.index
                 }
             }
         },
 
-        private: function(player) {
+        transactions: function(player) {
             //pvt
             console.debug(player);
         },
