@@ -65,7 +65,11 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
             _(this).bindAll('submit', 'render');
         },
 
-        render: function(player) {
+        render: function(controller, player) {
+            this.controller = controller;
+
+            _(this).bindAll('submit');
+
             this.form = new Backbone.Form({
                 model: player,
                 template: _.template($('#signup-form').html()),
@@ -88,7 +92,7 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
                 var player = this.form.model.save();
 
                 player.success(function(model, response) {
-                    router.navigate('', {trigger: true});
+                    self.controller.router.navigate('', {trigger: true});
                 });
 
                 player.error(function(response) {

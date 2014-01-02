@@ -10,14 +10,14 @@ define(['backbone', 'underscore', 'jquery', 'app/views', 'app/models'],
 
             if(_.has(this, 'routes')) {
                 this.routes = this.routes();
+
                 if(!_.isEmpty(this.routes)) {
                     _.each(_.keys(this.routes), function(k) {
-                        if( _.has(self.routes[k], 'loginRequired') &&
-                            self.routes[k].loginRequired === true) {
+                        if( _.has(self.routes[k], 'loginRequired') && self.routes[k].loginRequired === true) {
                             self.routes[k] = self.checkLogin.bind(_.extend(self,
-                                                                       { original: k }));
+                                                                           { original: k }));
                         } else {
-                            self.routes[k] = self.routes[k].handler;
+                            self.routes[k] = self.routes[k].handler.bind(self);
                         }
                     });
                 }
@@ -37,7 +37,7 @@ define(['backbone', 'underscore', 'jquery', 'app/views', 'app/models'],
             player = new models.Player().fetch();
             player.success(function() {
                 if(_.has(this , 'original')) {
-                    return this.routes[this.original].handler(player);
+                    return this.routes[this.original].handler.apply(self, [player]);
                 }
             });
 
@@ -92,6 +92,7 @@ define(['backbone', 'underscore', 'jquery', 'app/views', 'app/models'],
         },
 
         private: function(player) {
+            //pvt
             console.debug(player);
         },
 
@@ -106,14 +107,14 @@ define(['backbone', 'underscore', 'jquery', 'app/views', 'app/models'],
             var player = new models.Player();
             var view = new views.Signup();
 
-            return view.render(player);
+            return view.render(this, player);
         },
 
         login: function() {
             var player = new models.Player();
             var view = new views.Login();
 
-            return view.render(player);
+            return view.render(this, player);
         }
     };
 
