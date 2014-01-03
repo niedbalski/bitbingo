@@ -31,12 +31,14 @@ define(['backbone', 'underscore'], function(Backbone, _) {
         schema: {
             wallet: {
                 type: "Text",
-                validators: [ 'required' ]
+                validators: [ 'required' ],
+                help: "Enter a valid bitcoin wallet address"
             },
 
             password: {
                 type: "Password",
-                validators: [ 'required' ]
+                validators: [ 'required' ],
+                help: "Enter an alphanumeric value"
             },
 
             confirmation: {
@@ -50,12 +52,14 @@ define(['backbone', 'underscore'], function(Backbone, _) {
                         }
                     }
                     if ( !_.isEmpty(errs) ) return errs;
-                } ]
+                } ],
+                help: "Re-enter your password"
             },
 
             email: {
                 type: "Text",
-                validators: [ 'email' ]
+                validators: [ 'email' ],
+                help: "Optional: Your e-mail address"
             }
         }
     });

@@ -2,29 +2,41 @@
 require.config({
     baseUrl: "/assets/js/",
     shim: {
-        'jquery.validator': {
+        'jquery.cookie': {
             deps: [ 'jquery' ]
         },
 
-       'underscore': {
-           exports: '_'
-       },
+        'jquery.pnotify': {
+            deps: [ 'jquery' ]
+        },
 
-       'backbone': {
-           exports: "Backbone",
-           deps: [ 'jquery', 'underscore' ]
+        'underscore': {
+            exports: '_'
+        },
+
+        'backbone': {
+            exports: "Backbone",
+            deps: [ 'jquery', 'underscore' ]
         },
 
         'backbone-forms': {
             deps: [ 'backbone' ]
+        },
+
+        'bootstrap': {
+            deps: [ 'jquery' ]
         }
     },
+
+
 
     paths: {
         'app': 'app',
         'jquery': "//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min",
-        'jquery.validator': "//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.27/jquery.form-validator.min",
+        'jquery.cookie': "lib/jquery.cookie.min",
+        'jquery.pnotify': "lib/jquery.pnotify.min",
         'underscore': "lib/underscore-min",
+        'bootstrap': "lib/bootstrap.min",
         'backbone': "lib/backbone-min",
         'backbone-forms': "lib/backbone-forms/backbone-forms.min",
         'backbone-forms-list': "lib/backbone-forms/editors/list.min",

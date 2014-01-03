@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" conent="width=device-width, initial-scale=1.0"></meta>
-    <title>{% block title %}{% endblock %}</title>
-
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes">
+    <title>Bitbingo: Making Bitcoin Millonaires Every day</title>
     <!-- stylesheets -->
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
-    <link href="/assets/css/bootstrap.css" rel="stylesheet"></link>
-    <link href="/assets/css/main.css" rel="stylesheet"></link>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet"/>
+
+    <!-- Notification widget -->
+    <link href="/assets/css/jquery.pnotify.default.css" rel="stylesheet"/>
+    <link href="/assets/css/jquery.pnotify.default.icons.css" rel="stylesheet"/>
+
+
+    <link href="/assets/css/main.css" rel="stylesheet"/>
 
     <!-- backbone bootstrap forms -->
     <link href="/assets/js/lib/backbone-forms/templates/bootstrap3.css" rel="stylesheet" />
 
-
     <!-- Load the main Bitbingo Rubberduck application -->
-    <script data-main="/assets/js/app" src="/assets/js/lib/require.js"></script>
+    <script data-main="/assets/js/app" src="/assets/js/lib/require.js"/>
 
   </head>
   <body>
@@ -30,23 +34,23 @@
 	    Your current transactions
 	  </h3>
 	  <div class="row clearfix">
-	    <div class="col-md-12 column">
+	    <div class="col-md-12 col-xs-12 column">
 	    </div>
 	  </div>
 	  <div class="row clearfix">
-	    <div class="col-md-12 column">
+	    <div class="col-xs-12 column">
 	    </div>
 	  </div>
 	  <div class="row clearfix">
-	    <div class="col-md-12 column">
+	    <div class="col-xs-12 column">
 	    </div>
 	  </div>
 	  <div class="row clearfix">
-	    <div class="col-md-12 column">
+	    <div class="col-xs-12 column">
 	    </div>
 	  </div>
 	</div>
-	<div class="col-md-4 column">
+	<div class="col-xs-4 column">
 	  <h3 class="text-info text-center">
 	    h3. Lorem ipsum dolor sit amet.
 	  </h3>
@@ -169,24 +173,62 @@
     </script>
     <!-- End of transactions template -->
 
+    <!--- Badge section -->
+    <script type="text/template" id="badge-section">
+      <% if (player) { %>
+      <!-- Single button -->
+      <div class="btn-group btn-block visible-xs">
+        <hr>
+        <button type="button" class="btn btn-block btn-default dropdown-toggle" data-toggle="dropdown">
+          My Account <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu btn-block" role="menu">
+          <li>&nbsp;&nbsp;Your Balance: <%= player.balance %> BTC</li>
+          <li class="divider"></li>
+          <li><a href="#transactions">Transactions</a></li>
+          <li><a href="#support">Support</a></li>
+          <li><a href="#logout">Logout</a></li>
+        </ul>
+      </div>
+      <a class="hidden-xs btn btn-block btn-success pull-right"> Your current balance: <%= player.balance %> BTC </span>
+      <% } else { %>
+      <a class="btn btn-block btn-default pull-right" href="#login"><i class="fa fa-key"></i> Login / Signup </a></div>
+      <% } %>
+    </script>
+
+    <!-- Navigation bar container -->
+    <script type="text/template" id="navigation-section">
+      <% if (player) { %>
+      <li>
+        <a href="#transactions">Transactions</a>
+      </li>
+      <li class="hidden-xs">
+        <a href="#support">Support</a>
+      </li>
+      <li>
+        <a href="#logout">Logout</a>
+      </li>
+      <% } %>
+     </script>
+
     <!-- Played games table -->
     <script type="text/template" id="played-games">
       <table class="table table-hover table-condensed table-striped winners">
         <thead>
           <tr>
             <th>Game</th>
-            <th>Winner</th>
-            <th>Amount</th>
-            <th>Status</th>
+            <th class="hidden-xs">Winner</th>
+            <th>Bitcoins</th>
+            <th class="hidden-xs hidden-sm">Status</th>
           </tr>
         </thead>
         <tbody>
           <% _.each(games, function(game) { %>
           <tr>
             <td><%= game.id %></td>
-            <td><%= game.winner %></td>
+            <td class="hidden-xs"><%= game.winner %></td>
             <td><%= game.amount %></td>
-            <td><%= game.scheduled_at %></td>
+            <td class="hidden-xs hidden-sm"><%= game.scheduled_at %></td>
           </tr>
           <% }); %>
         </tbody>
@@ -195,89 +237,115 @@
 
     <!-- Login Form -->
     <script id="login-form" type="text/html">
+
       <div class="row login">
-        <div class="col-sm-3 col-lg-3"></div>
+        <div class="col-sm-1 col-md-3 col-lg-3"></div>
 
         <!--clearfix here-->
-        <div class="clearfix visible-sm"></div>
-        <div class="col-sm-6 col-lg-6">
-          <div class="ck form-group">
-            <form method="POST" id="login">
-              <div data-fields="wallet">
-              </div>
-              <div data-fields="password">
-              </div>
-              <input class="pull-right btn btn-default" id="login-submit" type="submit" value="Login">
-            </form>
-            <p>  Not yet registered?<a href="/#signup"> Signup now!</a></p>
+        <div class="clearfix visible-sm visible-xs"></div>
+        <div class="col-xs-12 col-sm-10 col-md-6 col-lg-6">
+
+          <div class="row login-container">
+            <div class="ck form-group">
+              <form method="POST" id="login">
+                <div data-fields="wallet"></div>
+                <div data-fields="password"></div>
+                <input class="pull-right btn btn-default btn-block"
+                       id="login-submit" type="submit" value="Login">
+              </form>
+           </div>
+          </div>
+          <hr>
+          <div class="row text-center">
+            <p>
+              <span class="center-block">
+                <i class="fa fa-user"></i> Not yet registered?
+              </span>
+              <a class="btn btn-default" href="#signup" style="margin-top: 10px">Signup Here!</a>
+            </p>
           </div>
         </div>
 
         <!--full with on responsive view-->
-        <div class="col-sm-2 col-lg-2"></div>
-
-      </div>
+        <div class="col-sm-1 col-md-3 col-lg-3"></div>
+      </div> <!-- end row -->
     </script>
 
     <!-- Signup form -->
     <script id="signup-form" type="text/html">
       <div class="row signup">
-        <div class="col-sm-3 col-lg-3"></div>
+        <div class="col-sm-1 col-md-1 col-lg-3"></div>
 
         <!--clearfix here-->
         <div class="clearfix visible-sm"></div>
-        <div class="col-sm-6 col-lg-6">
-          <div class="ck form-group">
-            <form method="POST" id="signup">
-              <div data-fields="wallet,password,confirmation"></div>
-              <div data-fields="email"></div>
-              <input class="pull-right btn btn-default" id="signup-submit" type="submit" value="Signup">
-            </form>
+        <div class="col-sm-10 col-md-10 col-lg-6">
 
-            <p style="margin-top: 15px"> Already a player? <a href="/#login"> Login here</a></p>
+            <div class="row signup-container">
+              <div class="form-group">
+                <form method="POST" id="signup">
+                  <div title="Enter a valid bitcoin wallet address" data-fields="wallet"></div>
+                  <div title="Enter a secure password" data-fields="password"></div>
+                  <div title="Confirm your password" data-fields="confirmation"></div>
+                  <div title="Optional: Your e-mail address" data-fields="email"></div>
+                  <input class="pull-right btn btn-default btn-block" id="signup-submit" type="submit" value="Signup">
+                </form>
+              </div>
+            </div>
+            <hr>
+            <div class="row text-center">
+              <p>
+                <span class="hidden-xs">
+                  <i class="fa fa-user"></i> Already a player?
+                </span>
+                <a href="/#login" class="btn btn-default" style="margin-top: 10px"> Login here</a>
+              </p>
+            </div>
 
-          </div>
         </div>
+
         <!--full with on responsive view-->
-        <div class="col-sm-2 col-lg-2"></div>
+        <div class="col-sm-1 col-md-1 col-lg-3"></div>
       </div>
     </script>
     <!-- / Backbone.js templates -->
-    
+
     <div class="container">
       <div class="row clearfix">
-	<div class="col-md-12 column">
+	<div class="col-md-12 col-sm-12 column">
 	  <h2>
 	    <i class="fa fa-btc fa-6"></i> BitBingo
 	  </h2>
-	  <ul class="nav nav-tabs">
-	    <li class="active">
-	      <a href="#">Home</a>
-	    </li>
-            <li>
-              <a class="hidden" href="/#transactions">Transactions</a>
-            </li>
-            <li>
-              <a class="hidden" href="/player/support">Support</a>
-            </li>
-            <li>
-              <a class="hidden" href="/player/logout">Logout</a>
-            </li>
-          </ul>
+          <!-- Navigation bar container -->
+          <div class="hidden-xs navigation-container">
+            <ul class="nav nav-tabs">
+	      <li class="active">
+	        <a href="#" class="home-tab">Home</a>
+	      </li>
+            </ul>
+          </div>
 
-	  <a class="badge pull-right" href="/#signup">Signup / Login</a>
-          
+          <!-- Badge container -->
+          <div class="row clearfix">
+            <div class="col-xs-1 col-sm-8 col-md-8 col-lg-8 column"></div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 column">
+              <div class="badge-container"></div>
+            </div>
+          </div>
+
+
 	  <div class="row clearfix">
-	    <div class="col-md-12 column">
-              <div id="content">{% block content %}{% endblock %}</div>
+	    <div class="col-sm-12 col-md-12 column">
+              <div id="content"></div>
 	    </div>
 	  </div>
 	  <div class="row clearfix game-container">
-	    <div class="col-md-8 column">
-              <div id="game">{% block game %}{% endblock %}</div>
+	    <div class="col-sm-8 col-md-8 column">
+              <div id="game">
+              </div>
 	    </div>
-	    <div class="col-md-4 column">
-              <div id="players">{% block players %}{% endblock %}</div>
+	    <div class="col-sm-4 col-md-4 column">
+              <div id="players">
+              </div>
 	    </div>
 	  </div>
 	  <hr>
@@ -288,4 +356,6 @@
       </div>
     </div>
   </body>
+<script type="text/javascript">
+</script>
 </html>

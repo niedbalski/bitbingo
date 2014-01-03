@@ -52,14 +52,41 @@ html {
 }
 
 .signup {
-    height: 300px;
     margin-top:35px;
+}
+
+.signup-container {
+    border: 1px solid #dddddd;
+    padding: 15px;
+}
+
+.login-container {
+    border: 1px solid #dddddd;
+    padding: 15px;
+}
+
+.login-container input[type="submit"] {
+/*    margin: 12px; */
+    margin-top: 20px;
+}
+
+.signup-container input[type="submit"] {
+    margin-top: 20px;
+}
+
+.badge-container {
+    margin-top: 15px;
 }
 
 .game-container {
     margin-top: 35px;
 }
 
+.signup-container .suggestion {
+    position: absolute;
+    margin-left: 10px;
+    margin-bottom: 0;
+}
 .not-found {
     height: 250px;
 }

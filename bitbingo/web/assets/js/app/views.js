@@ -1,4 +1,5 @@
-define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
+define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify'],
+       function(Backbone, _, $) {
 
     views = {};
     views.PlayedGames = Backbone.View.extend({
@@ -11,7 +12,6 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
 
             this.collection.bind('request', this.loading);
             this.collection.bind('sync', this.render);
-
             this.collection.fetch();
         },
 
@@ -41,10 +41,11 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
 
         initialize: function() {
             _(this).bindAll('render', 'submit');
+            $('.badge-container').empty();
+
         },
 
         render: function(controller, player) {
-
             this.controller = controller;
 
             _(this).bindAll('submit');
@@ -56,19 +57,20 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
                 schema: {
                     wallet: {
                         type:'Text',
-                        validators: ['required']
+                        validators: ['required'],
+                        help: "Enter your bitcoin wallet address"
                     },
                     password: {
                         type: 'Password',
-                        validators: ['required']
+                        validators: ['required'],
+                        help: "Enter your account password"
                     }
                 }
             });
 
             $('#players').empty();
 
-            $(this.el).empty();
-            $(this.el).html(this.form.render().el);
+            $(this.el).empty().html(this.form.render().el);
         },
 
         submit: function(event) {
@@ -83,11 +85,20 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
                     type: 'POST',
                     dataType: 'json',
                     data: this.form.getValue()
-                }).done(function() {
+                }).done(function(player) {
+                    $.cookie('player', JSON.stringify(player));
+                    //Todo: bind this to the event bus :)
+                    $.pnotify({
+                        title: 'Welcome back, friend!',
+                        text: 'Just add some Bitcoins and start playing!',
+                        type: 'success',
+                        shadow: false
+                    });
                     self.controller.router.navigate('', {trigger: true});
                 }).fail(function(){
                     console.warn('Login Error');
-                    self.form.fields['password'].setError("Invalid provided credentials. Try again");
+                    self.form.fields['password'].setError(
+                        "Invalid provided credentials. Try again");
                 });
 
             }
@@ -104,6 +115,8 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
 
         initialize: function() {
             _(this).bindAll('submit', 'render');
+            $('.badge-container').empty();
+
         },
 
         render: function(controller, player) {
@@ -118,6 +131,7 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
             });
 
             $('#players').empty();
+            $('.badge-container').empty();
 
             $(this.el).empty();
             $(this.el).html(this.form.render().el);
@@ -133,6 +147,7 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
                 var player = this.form.model.save();
 
                 player.success(function(model, response) {
+                    $.cookie('player', JSON.stringify(model));
                     self.controller.router.navigate('', {trigger: true});
                 });
 
@@ -144,6 +159,10 @@ define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
                 });
             }
         }
+    });
+
+    views.Home = Backbone.View.extend({
+
     });
 
     views.Transactions = Backbone.View.extend({

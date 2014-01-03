@@ -69,7 +69,8 @@ class AuthResource(Resource):
     player_fields = {
         'id': fields.Integer,
         'created': fields.DateTime,
-        'wallet': fields.String
+        'wallet': fields.String,
+        'balance': fields.Float
     }
 
     @marshal_with(player_fields)
@@ -99,7 +100,8 @@ class PlayerResource(Resource):
     player_fields = {
         'id': fields.Integer,
         'created': fields.DateTime,
-        'wallet': fields.String
+        'wallet': fields.String,
+        'balance': fields.Float
     }
 
     @marshal_with(player_fields)
@@ -107,6 +109,12 @@ class PlayerResource(Resource):
         if not current_user.is_authenticated():
             return abort(403)
         return current_user
+
+    def delete(self):
+        if not current_user.is_authenticated():
+            return abort(404, "Player is not logged in")
+        logout_user()
+        return "User logged out"
 
     @marshal_with(player_fields)
     def post(self):
