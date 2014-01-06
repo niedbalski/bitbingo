@@ -13,7 +13,7 @@
     <link href="/assets/css/jquery.pnotify.default.css" rel="stylesheet"/>
     <link href="/assets/css/jquery.pnotify.default.icons.css" rel="stylesheet"/>
 
-
+    <!-- Main stylesheet -->
     <link href="/assets/css/main.css" rel="stylesheet"/>
 
     <!-- backbone bootstrap forms -->
@@ -169,7 +169,6 @@
 	  </ul>
 	</div>
       </div>
-
     </script>
     <!-- End of transactions template -->
 
@@ -183,200 +182,280 @@
           My Account <span class="caret"></span>
         </button>
         <ul class="dropdown-menu btn-block" role="menu">
-          <li>&nbsp;&nbsp;Your Balance: <%= player.balance %> BTC</li>
+          <li><a href="#balance">&nbsp;&nbsp;Your Balance: <%= player.balance %> BTC</a></li>
           <li class="divider"></li>
-          <li><a href="#transactions">Transactions</a></li>
+          <li><a href="#support">Support</a></li>
           <li><a href="#logout">Logout</a></li>
         </ul>
       </div>
-      <a class="hidden-xs btn btn-block btn-success pull-right"> Your current balance: <%= player.balance %> BTC </span>
+      <a id="balance-btn" href="#balance" class="hidden-xs btn btn-block btn-success pull-right">
+        Your current balance: <%= player.balance %> BTC </a>
       <% } else { %>
       <a class="btn btn-block btn-default pull-right" href="#login"><i class="fa fa-key"></i> Login / Signup </a></div>
-      <% } %>
-    </script>
+<% } %>
+</script>
 
-    <!-- Navigation bar container -->
-    <script type="text/template" id="navigation-section">
-      <% if (player) { %>
-      <!-- <li> -->
-      <!--   <a href="#transactions">Transactions</a> -->
-      <!-- </li> -->
-      <li class="hidden-xs">
-        <a href="#support">Support</a>
-      </li>
-      <li>
-        <a href="#logout">Logout</a>
-      </li>
-      <% } %>
-     </script>
+<!-- Navigation bar container -->
+<script type="text/template" id="navigation-section">
+  <% if (player) { %>
+  <li>
+    <a href="#balance">Balance</a>
+  </li>
+  <li class="hidden-xs">
+    <a href="#support">Support</a>
+  </li>
+  <li>
+    <a href="#logout">Logout</a>
+  </li>
+  <% } %>
+</script>
 
-    <!-- Played games table -->
-    <script type="text/template" id="played-games">
-      <table class="table table-hover table-condensed table-striped winners">
-        <thead>
-          <tr>
-            <th>Game</th>
-            <th class="hidden-xs">Winner</th>
-            <th>Bitcoins</th>
-            <th class="hidden-xs hidden-sm">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% _.each(games, function(game) { %>
-          <tr>
-            <td><%= game.id %></td>
-            <td class="hidden-xs"><%= game.winner %></td>
-            <td><%= game.amount %></td>
-            <td class="hidden-xs hidden-sm"><%= game.scheduled_at %></td>
-          </tr>
-          <% }); %>
-        </tbody>
-      </table>
-    </script>
+<!-- Played games table -->
+<script type="text/template" id="played-games">
+  <table class="table table-hover table-condensed table-striped winners">
+    <thead>
+      <tr>
+        <th>Game</th>
+        <th class="hidden-xs">Winner</th>
+        <th>Bitcoins</th>
+        <th class="hidden-xs hidden-sm">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(games, function(game) { %>
+      <tr>
+        <td><%= game.id %></td>
+        <td class="hidden-xs"><%= game.winner %></td>
+        <td><%= game.amount %></td>
+        <td class="hidden-xs hidden-sm"><%= game.scheduled_at %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</script>
 
-    <!-- Login Form -->
-    <script id="login-form" type="text/html">
-      <div class="row login">
-        <div class="col-sm-1 col-md-3 col-lg-3"></div>
+<!-- Balance main view -->
+<script type="text/template" id="account-container">
+  <div class="container">
 
-        <!--clearfix here-->
-        <div class="clearfix visible-sm visible-xs"></div>
-        <div class="col-xs-12 col-sm-10 col-md-6 col-lg-6">
-
-          <div class="row login-container">
-            <div class="ck form-group">
-              <form method="POST" id="login">
-                <div data-fields="wallet"></div>
-                <div data-fields="password"></div>
-                <input class="pull-right btn btn-default btn-block"
-                       id="login-submit" type="submit" value="Login">
-              </form>
-           </div>
-          </div>
-          <hr>
-          <div class="row text-center">
-            <p>
-              <span class="center-block">
-                <i class="fa fa-user"></i> Not yet registered?
-              </span>
-              <a class="btn btn-default" href="#signup" style="margin-top: 10px">Signup Here!</a>
-            </p>
-          </div>
-        </div>
-
-        <!--full with on responsive view-->
-        <div class="col-sm-1 col-md-3 col-lg-3"></div>
-      </div> <!-- end row -->
-    </script>
-
-    <!-- Signup form -->
-    <script id="signup-form" type="text/html">
-      <div class="row signup">
-        <div class="col-sm-1 col-md-1 col-lg-3"></div>
-
-        <!--clearfix here-->
-        <div class="clearfix visible-sm"></div>
-        <div class="col-sm-10 col-md-10 col-lg-6">
-
-            <div class="row signup-container">
-              <div class="form-group">
-                <form method="POST" id="signup">
-                  <div title="Enter a valid bitcoin wallet address" data-fields="wallet"></div>
-                  <div title="Enter a secure password" data-fields="password"></div>
-                  <div title="Confirm your password" data-fields="confirmation"></div>
-                  <div title="Optional: Your e-mail address" data-fields="email"></div>
-                  <input class="pull-right btn btn-default btn-block" id="signup-submit" type="submit" value="Signup">
-                </form>
-              </div>
-            </div>
-            <hr>
-            <div class="row text-center">
-              <p>
-                <span class="hidden-xs">
-                  <i class="fa fa-user"></i> Already a player?
-                </span>
-                <a href="/#login" class="btn btn-default" style="margin-top: 10px"> Login here</a>
-              </p>
-            </div>
-
-        </div>
-
-        <!--full with on responsive view-->
-        <div class="col-sm-1 col-md-1 col-lg-3"></div>
+   <!-- Your account balance -->
+    <div class="row clearfix">
+      <div class="col-md-6 column">
+        <h4> <i class="fa fa-briefcase"></i> Your account balance </h4>
+        <p> Review your current balance here. Please don't hesitate in visit the support section  if you have any concern.</p>
+        <table class="table" style="margin-top: 40px">
+          <tbody>
+            <tr>
+              <td><strong>Account Balance</strong></td>
+              <td><%= player.balance %> BTC </td>
+            </tr>
+            <tr>
+              <td><strong>Daily Balance</strong></td>
+              <td>10.5 BTC </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <img src="https://confluence.atlassian.com/download/attachments/298976800/FishEye_Charts_Page04.png?version=1&modificationDate=1246107735443&api=v2" width="400px"/> -->
       </div>
-    </script>
-    <!-- / Backbone.js templates -->
-
-    <div class="container">
-      <div class="row clearfix">
-	<div class="col-md-12 col-sm-12 column">
-	  <h2>
-	    <i class="fa fa-btc fa-6"></i> BitBingo
-	  </h2>
-          <!-- Navigation bar container -->
-          <div class="hidden-xs navigation-container">
-            <ul class="nav nav-tabs">
-	      <li class="active">
-	        <a href="#" class="home-tab">Home</a>
-	      </li>
-            </ul>
-          </div>
-
-          <!-- Modal -->
-          <div class="modal fade" id="index-modal" tabindex="-1" role="dialog" aria-labelledby="index-modal" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body">
-                  ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-          </div><!-- /.modal -->
-          
-          <!-- Badge container -->
-          <div class="row clearfix">
-            <div class="col-xs-1 col-sm-8 col-md-8 col-lg-8 column"></div>
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 column">
-              <div class="badge-container"></div>
-            </div>
-          </div>
 
 
-	  <div class="row clearfix">
-	    <div class="col-sm-12 col-md-12 column">
-              <div id="content">
-                <a class="center-block text-center" style="margin-top: 150px; margin-bottom: 150px">
-                  <i class="fa fa-spinner"></i> Loading Application ....
-                </a>
-              </div>
-	    </div>
+      <!-- Deposit some bitcoins -->
+      <div class="col-md-6 column">
+        <!--- Deposit some bitcoins -->
+        <h4><i class="fa fa-btc"></i> Deposit Bitcoins</h4>
+        <p> Add bitcoins to your account for playing! </p>
+	<form role="form">
+	  <div class="form-group">
+	    <label for="amount">Bitcoin Amount</label>
+            <input type="email" placeholder="0" class="form-control" id="amount"/>
+	    <p class="help-block">
+              Enter a valid bitcoin amount
+	    </p>
 	  </div>
-	  <div class="row clearfix game-container">
-	    <div class="col-sm-8 col-md-8 column">
-              <div id="game">
-              </div>
-	    </div>
-	    <div class="col-sm-4 col-md-4 column">
-              <div id="players">
-              </div>
-	    </div>
+	  <!-- <div class="checkbox"> -->
+	  <!--   <label><input type="checkbox" /><small>Terms and co</small></label> -->
+	  <!-- </div> -->
+          <button type="submit" class="btn btn-default btn-block">Deposit Bitcoins</button>
+	</form>
+        <!-- /end deposit some bitcoins -->
+
+        <hr>
+        <!--- Get some bitcoins -->
+        <h4><i class="fa fa-btc"></i> Request Bitcoins</h4>
+        <p> Transfer your earned bitcoins to your private wallet </p>
+	<form role="form">
+	  <div class="form-group">
+	    <label for="wallet">Your Bitcoin wallet address</label>
+            <input type="email" class="form-control" id="wallet" value="<%= player.wallet %>"/>
+	    <p class="help-block">
+	      Enter your bitcoin wallet address
+	    </p>
+	    <label for="amount">Bitcoin Amount</label>
+            <input type="email" placeholder="0" class="form-control" id="amount"/>
+	    <p class="help-block">
+              <span class="label label-warning">You can transfer up to <%= player.balance - 0.0001%> BTC</span>
+	    </p>
 	  </div>
-	  <hr>
-	  <address>
-            <strong>Bitcoin Games, LLC.</strong><br /> 2909 Vitacura Ave, Suite 215<br /> Santiago, RM 94107<br /> <abbr title="Phone">P:</abbr> (123) 456-7890
-          </address>
-	</div>
+	  <div class="checkbox">
+	    <label><input type="checkbox" /><small>Accept 0.0001 BTC for a faster transfer</small></label>
+	  </div>
+          <button type="submit" class="btn btn-default btn-block">Transfer Bitcoins</button>
+	</form>
+        <!-- /end get some bitcoins -->
       </div>
     </div>
-  </body>
+  </div>
+</script>
+
+<!-- Login Form -->
+<script id="login-form" type="text/html">
+  <div class="row login">
+    <div class="col-sm-1 col-md-3 col-lg-3"></div>
+
+    <!--clearfix here-->
+    <div class="clearfix visible-sm visible-xs"></div>
+    <div class="col-xs-12 col-sm-10 col-md-6 col-lg-6">
+
+      <div class="row login-container">
+        <div class="ck form-group">
+          <form method="POST" id="login">
+            <div data-fields="wallet"></div>
+            <div data-fields="password"></div>
+            <input class="pull-right btn btn-default btn-block"
+                   id="login-submit" type="submit" value="Login">
+          </form>
+        </div>
+      </div>
+      <hr>
+      <div class="row text-center">
+        <p>
+          <span class="center-block">
+            <i class="fa fa-user"></i> Not yet registered?
+          </span>
+          <a class="btn btn-default" href="#signup" style="margin-top: 10px">Signup Here!</a>
+        </p>
+      </div>
+    </div>
+
+    <!--full with on responsive view-->
+    <div class="col-sm-1 col-md-3 col-lg-3"></div>
+  </div> <!-- end row -->
+</script>
+
+<!-- Signup form -->
+<script id="signup-form" type="text/html">
+  <div class="row signup">
+    <div class="col-sm-1 col-md-1 col-lg-3"></div>
+
+    <!--clearfix here-->
+    <div class="clearfix visible-sm"></div>
+    <div class="col-sm-10 col-md-10 col-lg-6">
+
+      <div class="row signup-container">
+        <div class="form-group">
+          <form method="POST" id="signup">
+            <div title="Enter a valid bitcoin wallet address" data-fields="wallet"></div>
+            <div title="Enter a secure password" data-fields="password"></div>
+            <div title="Confirm your password" data-fields="confirmation"></div>
+            <div title="Optional: Your e-mail address" data-fields="email"></div>
+            <input class="pull-right btn btn-default btn-block" id="signup-submit" type="submit" value="Signup">
+          </form>
+        </div>
+      </div>
+      <hr>
+      <div class="row text-center">
+        <p>
+          <span class="hidden-xs">
+            <i class="fa fa-user"></i> Already a player?
+          </span>
+          <a href="/#login" class="btn btn-default" style="margin-top: 10px"> Login here</a>
+        </p>
+      </div>
+
+    </div>
+
+    <!--full with on responsive view-->
+    <div class="col-sm-1 col-md-1 col-lg-3"></div>
+  </div>
+</script>
+<!-- / Backbone.js templates -->
+
+<div class="container">
+
+  <div class="row clearfix">
+    <div class="col-md-12 col-sm-12 column">
+      <h2>
+	<i class="fa fa-btc fa-6"></i> BitBingo
+      </h2>
+
+      <!-- Navigation bar container -->
+      <div class="hidden-xs navigation-container">
+        <ul class="nav nav-tabs">
+	  <li class="active">
+	    <a href="#" class="home-tab">Home</a>
+	  </li>
+        </ul>
+      </div>
+
+      <!-- <\!-- Modal -\-> -->
+      <!-- <div class="modal fade" id="index-modal" tabindex="-1" role="dialog" aria-labelledby="index-modal" aria-hidden="true"> -->
+      <!--   <div class="modal-dialog"> -->
+      <!--     <div class="modal-content"> -->
+      <!--       <div class="modal-header"> -->
+      <!--         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> -->
+      <!--         <h4 class="modal-title" id="myModalLabel">Modal title</h4> -->
+      <!--       </div> -->
+      <!--       <div class="modal-body"> -->
+      <!--         ... -->
+      <!--       </div> -->
+      <!--       <div class="modal-footer"> -->
+      <!--         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+      <!--         <button type="button" class="btn btn-primary">Save changes</button> -->
+      <!--       </div> -->
+      <!--     </div><\!-- /.modal-content -\-> -->
+      <!--   </div><\!-- /.modal-dialog -\-> -->
+      <!-- </div><\!-- /.modal -\-> -->
+
+      <!-- Badge container -->
+      <div class="row clearfix">
+        <div class="col-xs-1 col-sm-8 col-md-8 col-lg-8 column"></div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 column">
+          <div class="badge-container" id="badge-container">
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Main Content -->
+      <div class="row clearfix">
+	<div class="col-sm-12 col-md-12 column">
+          <div id="content" class="content">
+            <a class="center-block text-center" style="margin-top: 150px; margin-bottom: 150px">
+              <i class="fa fa-spinner"></i> Loading Application ....
+            </a>
+          </div>
+	</div>
+      </div>
+
+      <div class="row clearfix">
+	<div class="col-sm-8 col-md-8 column">
+          <div id="game" class="game">
+          </div>
+	</div>
+	<div class="col-sm-4 col-md-4 column">
+          <div id="players" class="players">
+          </div>
+	</div>
+      </div>
+
+      <hr>
+      <address>
+        <strong>Bitcoin Games, LLC.</strong><br /> 2909 Vitacura Ave, Suite 215<br /> Santiago, RM 94107<br /> <abbr title="Phone">P:</abbr> (123) 456-7890
+      </address>
+    </div>
+  </div>
+</div>
+</body>
 <script type="text/javascript">
 </script>
 </html>

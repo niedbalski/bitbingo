@@ -56,7 +56,7 @@ define(['backbone',
             if ( player ) {
                 return this.caller.apply(ctx, [player]);
             }
-            
+
             var self = this;
 
             player = new models.Player().fetch();
@@ -98,6 +98,11 @@ define(['backbone',
                     handler: this.transactions
                 },
 
+                'balance': {
+                    loginRequired: true,
+                    handler: this.balance
+                },
+
                 'login': {
                     loginRequired: false,
                     handler: this.login
@@ -107,7 +112,7 @@ define(['backbone',
                     loginRequired: true,
                     handler: this.support
                 },
-                
+
                 'signup': {
                     loginRequired: false,
                     handler: this.signup
@@ -126,10 +131,20 @@ define(['backbone',
             });
         },
 
+        balance: function(player) {
+            var navigation = new views.Navigation({
+                model: player
+            });
+
+            var balance = new views.Balance({
+                model: player
+            });
+        },
+
         support: function(player) {
             console.log(player);
         },
-        
+
         logout: function(player) {
             var player = this.isLogged();
 
@@ -145,14 +160,13 @@ define(['backbone',
             if ( $('.navigation-container .nav li').length > 1 ) {
                 $('.home-tab').parent().siblings('li').not(this).remove();
             }
-            
+
             var self = this;
-            
+
             //Todo: bind this model to the view ...
             player = new models.Player();
             player.destroy({
                 success: function(model, response) {
-                        
                     $.pnotify({
                         title: 'See you later',
                         text: 'You have been logged out successfully.',
@@ -164,38 +178,32 @@ define(['backbone',
                     });
                 }
             });
-
         },
 
         index: function(){
-
             //This must be binded to the view!!!!!!!!!!!! and model
             var player = this.isLogged();
-            var navigation = _.template($('#navigation-section').html());
 
             $('body').on('touchstart.dropdown', '.dropdown-menu', function (e) {
                 e.stopPropagation();
             });
 
-            if ( $('.navigation-container .nav li').length == 1 ) {
-                $('.navigation-container .nav').append(
-                    navigation({
-                        player: player
-                    })
-                );
-            }
-
-            var badge = _.template($('#badge-section').html());
-            $('.badge-container').html(
-                badge({
-                    player: player
-                })
-            );
-
-            var games = new models.Games();
-            var gamesView = new views.PlayedGames({
-                collection: games
+            var navigation = new views.Navigation({
+                model: player
             });
+
+            var badge = new views.Badge({
+                model: player
+            });
+
+            var games = new views.PlayedGames({
+                collection: new models.Games()
+            });
+
+            $('#content').hide();
+            $('#game').show();
+            $('#players').show();
+
         },
 
         signup: function() {

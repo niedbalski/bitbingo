@@ -60,6 +60,19 @@ html {
     padding: 15px;
 }
 
+
+.players {
+    margin-top: 25px;
+}
+
+.content {
+    margin-top: 25px;
+}
+
+.game {
+    margin-top: 25px;
+}
+
 .login-container {
     border: 1px solid #dddddd;
     padding: 15px;

@@ -2,9 +2,60 @@ define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify'],
        function(Backbone, _, $) {
 
     views = {};
-    views.PlayedGames = Backbone.View.extend({
-        el: $("#players"),
+    views.Balance = Backbone.View.extend({
+        el: $('#content'),
+        template: _.template($("#account-container").html()),
 
+        initialize: function() {
+            $('#balance-btn').remove();
+            $('#players').empty();
+            $('#game').empty();
+
+            $(this.el).empty();
+            $(this.el).html(
+                this.template({
+                    player: this.model
+                })
+            );
+
+            $(this.el).show();
+        }
+    });
+
+    views.Badge = Backbone.View.extend({
+        el: $("#badge-container"),
+        template: _.template($("#badge-section").html()),
+
+        initialize: function() {
+            _(this).bindAll('render');
+            this.render();
+        },
+
+        render: function() {
+            $(this.el).html(this.template({
+                player: this.model
+            }));
+        }
+    });
+
+    views.Navigation = Backbone.View.extend({
+        el: $('#navitation-container'),
+        template: _.template($('#navigation-section').html()),
+
+        initialize: function() {
+            if ( $('.navigation-container .nav li').length == 1 ) {
+                $('.navigation-container .nav').append(
+                     this.template({
+                        player: this.model
+                    })
+                );
+            }
+        }
+    });
+
+    views.PlayedGames = Backbone.View.extend({
+
+        el: $("#players"),
         template: _.template($('#played-games').html()),
 
         initialize: function() {
@@ -16,14 +67,11 @@ define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify'],
         },
 
         loading: function() {
-            $(this.el).append('<i class="fa fa-spinner fa-spin"></i> Loading game results from server');
+            $(this.el).append(
+                '<i class="fa fa-spinner fa-spin"></i> Loading game results ...');
         },
 
         render: function() {
-            if ( ! $('#content').is(':empty') ) {
-                $('#content').empty();
-            }
-
             $(this.el).empty();
             $(this.el).html(this.template({
                 games: this.collection.toJSON()
@@ -69,8 +117,8 @@ define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify'],
             });
 
             $('#players').empty();
-
             $(this.el).empty().html(this.form.render().el);
+            $(this.el).show();
         },
 
         submit: function(event) {
@@ -158,21 +206,6 @@ define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify'],
                     }
                 });
             }
-        }
-    });
-
-    views.Home = Backbone.View.extend({
-
-    });
-
-    views.Transactions = Backbone.View.extend({
-        el: $('#content'),
-
-        initialize: function() {
-        },
-
-        render: function() {
-            var transactions = new Transaction().fetch();
         }
     });
 
