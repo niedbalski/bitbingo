@@ -24,26 +24,12 @@ define(['backbone',
                 if(!_.isEmpty(this.routes)) {
                     _.each(_.keys(this.routes), function(k) {
                         if(self.routes[k].loginRequired === true) {
-                            routes[k] = self.playerIsLogged.bind({
+                            routes[k] = self.checkIsLogged.bind({
                                 caller: self.routes[k].handler
                             }, self);
                         } else {
                             routes[k] = self.routes[k].handler.bind(self);
                         }
-
-                        // if(self.routes[k].loginRequired === true) {
-                        //     self.routes[k] = self.checkLogin.bind(
-                        //         _.extend(self, {
-                        //             original: self.routes[k].handler
-                        //         }));
-
-
-                        //     console.log(self.routes[k]);
-                        //     console.log(self.routes[k].original);
-
-                        // } else {
-                        //     self.routes[k] = self.routes[k].handler.bind(self);
-                        // }
                     });
                 }
             }
@@ -64,12 +50,13 @@ define(['backbone',
             return false;
         },
 
-        playerIsLogged: function(ctx) {
+        checkIsLogged: function(ctx) {
             var player = ctx.isLogged();
 
             if ( player ) {
                 return this.caller.apply(ctx, [player]);
             }
+            
             var self = this;
 
             player = new models.Player().fetch();
@@ -79,7 +66,7 @@ define(['backbone',
             });
 
             player.error(function() {
-                return self.loginRequired();
+                return ctx.loginRequired();
             });
         },
 
@@ -116,6 +103,11 @@ define(['backbone',
                     handler: this.login
                 },
 
+                'support': {
+                    loginRequired: true,
+                    handler: this.support
+                },
+                
                 'signup': {
                     loginRequired: false,
                     handler: this.signup
@@ -125,11 +117,6 @@ define(['backbone',
                     loginRequired: true,
                     handler: this.logout
                 }
-
-                // "*actions" : {
-                //      loginRequired: false,
-                //      handler: this.index
-                // }
             }
         },
 
@@ -139,29 +126,45 @@ define(['backbone',
             });
         },
 
+        support: function(player) {
+            console.log(player);
+        },
+        
         logout: function(player) {
+            var player = this.isLogged();
+
+            if ( _.isNull(player) || _.isUndefined(player) || player === false ) {
+                return this.router.navigate('', {
+                    trigger: true
+                });
+            }
+
+            //remove the player cookie
             $.removeCookie('player');
 
+            if ( $('.navigation-container .nav li').length > 1 ) {
+                $('.home-tab').parent().siblings('li').not(this).remove();
+            }
+            
+            var self = this;
+            
             //Todo: bind this model to the view ...
             player = new models.Player();
-            player.fetch().success(function(response) {
-                player.destroy({
-                    success: function(model, response) {
-                        $.pnotify({
-                            title: 'See you later',
-                            text: 'You have been logged out successfully.',
-                            type: 'success'
-                        });
-                        if ( $('.navigation-container .nav li').length > 1 ) {
-                            $('.home-tab').parent().siblings('li').not(this).remove();
-                        }
-                    }
-                });
+            player.destroy({
+                success: function(model, response) {
+                        
+                    $.pnotify({
+                        title: 'See you later',
+                        text: 'You have been logged out successfully.',
+                        type: 'success'
+                    });
+
+                    self.router.navigate('', {
+                        trigger: true
+                    });
+                }
             });
 
-            this.router.navigate('', {
-                trigger: true
-            });
         },
 
         index: function(){

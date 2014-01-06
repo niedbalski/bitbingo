@@ -11,6 +11,7 @@ define(["jquery",
                     'app/controllers'],
 
                    function(models, views, controllers) {
+                       
                        Application = {};
 
                        Application.controllers = [
@@ -24,6 +25,7 @@ define(["jquery",
                                        $('.nav .active').removeClass('active') && $(this).addClass('active');
                                    }
                                });
+
                            });
 
                            _.each(this.controllers, function(controller) {

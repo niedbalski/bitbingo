@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes">
     <title>Bitbingo: Making Bitcoin Millonaires Every day</title>
     <!-- stylesheets -->
-    <link href="/assets/css/font-awesome.css" rel="stylesheet">
+    <link href="/assets/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="/assets/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet"/>
 
     <!-- Notification widget -->
     <link href="/assets/css/jquery.pnotify.default.css" rel="stylesheet"/>
@@ -186,7 +186,6 @@
           <li>&nbsp;&nbsp;Your Balance: <%= player.balance %> BTC</li>
           <li class="divider"></li>
           <li><a href="#transactions">Transactions</a></li>
-          <li><a href="#support">Support</a></li>
           <li><a href="#logout">Logout</a></li>
         </ul>
       </div>
@@ -199,9 +198,9 @@
     <!-- Navigation bar container -->
     <script type="text/template" id="navigation-section">
       <% if (player) { %>
-      <li>
-        <a href="#transactions">Transactions</a>
-      </li>
+      <!-- <li> -->
+      <!--   <a href="#transactions">Transactions</a> -->
+      <!-- </li> -->
       <li class="hidden-xs">
         <a href="#support">Support</a>
       </li>
@@ -237,7 +236,6 @@
 
     <!-- Login Form -->
     <script id="login-form" type="text/html">
-
       <div class="row login">
         <div class="col-sm-1 col-md-3 col-lg-3"></div>
 
@@ -324,6 +322,25 @@
             </ul>
           </div>
 
+          <!-- Modal -->
+          <div class="modal fade" id="index-modal" tabindex="-1" role="dialog" aria-labelledby="index-modal" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
+          
           <!-- Badge container -->
           <div class="row clearfix">
             <div class="col-xs-1 col-sm-8 col-md-8 col-lg-8 column"></div>
@@ -335,7 +352,11 @@
 
 	  <div class="row clearfix">
 	    <div class="col-sm-12 col-md-12 column">
-              <div id="content"></div>
+              <div id="content">
+                <a class="center-block text-center" style="margin-top: 150px; margin-bottom: 150px">
+                  <i class="fa fa-spinner"></i> Loading Application ....
+                </a>
+              </div>
 	    </div>
 	  </div>
 	  <div class="row clearfix game-container">
