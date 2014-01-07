@@ -234,65 +234,85 @@
   </table>
 </script>
 
+
+<!-- Deposit form -->
+<script type="text/template" id="deposit-form">
+  <form>
+      <div data-fields="amount">
+      </div>
+    <!-- <div class="checkbox"> -->
+    <!--   <label><input type="checkbox" /><small>Terms and co</small></label> -->
+    <!-- </div> -->
+    <button type="submit" id="deposit-btn" class="btn btn-default btn-block">Deposit Bitcoins</button>
+  </form>
+  <!-- /end deposit some bitcoins -->
+</script>
+
 <!-- Balance main view -->
 <script type="text/template" id="account-container">
+
   <div class="container">
 
    <!-- Your account balance -->
-    <div class="row clearfix">
-      <div class="col-md-6 column">
-        <h4> <i class="fa fa-briefcase"></i> Your account balance </h4>
-        <p> Review your current balance here. Please don't hesitate in visit the support section  if you have any concern.</p>
-        <table class="table" style="margin-top: 40px">
-          <tbody>
-            <tr>
-              <td><strong>Account Balance</strong></td>
-              <td><%= player.balance %> BTC </td>
-            </tr>
-            <tr>
-              <td><strong>Daily Balance</strong></td>
-              <td>10.5 BTC </td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- <img src="https://confluence.atlassian.com/download/attachments/298976800/FishEye_Charts_Page04.png?version=1&modificationDate=1246107735443&api=v2" width="400px"/> -->
-      </div>
+   <div class="row clearfix">
 
+     <div class="col-md-6 column">
+
+       <h4> <i class="fa fa-briefcase"></i> Your account balance </h4>
+       <p class="hidden-xs"> Review your current balance here. Please don't hesitate in visit the support section  if you have any concern.</p>
+       <table class="table" style="margin-top: 40px">
+         <tbody>
+           <tr>
+             <td><strong>Account Balance</strong></td>
+             <td><%= player.balance %> BTC </td>
+           </tr>
+           <tr>
+             <td><strong>Daily Balance</strong></td>
+             <td>10.5 BTC </td>
+           </tr>
+         </tbody>
+       </table>
+       <hr>
+       <h4> <i class="fa fa-briefcase"></i> Your account balance </h4>
+       <p class="hidden-xs"> Review your current balance here. Please don't hesitate in visit the support section  if you have any concern.</p>
+       <table class="table" style="margin-top: 40px">
+         <tbody>
+           <tr>
+             <td><strong>Account Balance</strong></td>
+             <td><%= player.balance %> BTC </td>
+           </tr>
+           <tr>
+             <td><strong>Daily Balance</strong></td>
+             <td>10.5 BTC </td>
+           </tr>
+         </tbody>
+       </table>
+
+     </div>
+
+   <!-- Your account balance -->
+    <div class="row clearfix">
 
       <!-- Deposit some bitcoins -->
       <div class="col-md-6 column">
         <!--- Deposit some bitcoins -->
         <h4><i class="fa fa-btc"></i> Deposit Bitcoins</h4>
-        <p> Add bitcoins to your account for playing! </p>
-	<form role="form">
-	  <div class="form-group">
-	    <label for="amount">Bitcoin Amount</label>
-            <input type="email" placeholder="0" class="form-control" id="amount"/>
-	    <p class="help-block">
-              Enter a valid bitcoin amount
-	    </p>
-	  </div>
-	  <!-- <div class="checkbox"> -->
-	  <!--   <label><input type="checkbox" /><small>Terms and co</small></label> -->
-	  <!-- </div> -->
-          <button type="submit" class="btn btn-default btn-block">Deposit Bitcoins</button>
-	</form>
-        <!-- /end deposit some bitcoins -->
-
+        <p class="hidden-xs"> Add bitcoins to your account for playing! </p>
+        <div id="deposit"></div>
         <hr>
         <!--- Get some bitcoins -->
         <h4><i class="fa fa-btc"></i> Request Bitcoins</h4>
-        <p> Transfer your earned bitcoins to your private wallet </p>
+        <p class="hidden-xs"> Transfer your earned bitcoins to your private wallet </p>
 	<form role="form">
 	  <div class="form-group">
 	    <label for="wallet">Your Bitcoin wallet address</label>
             <input type="email" class="form-control" id="wallet" value="<%= player.wallet %>"/>
-	    <p class="help-block">
+	    <p class="help-block hidden-xs">
 	      Enter your bitcoin wallet address
 	    </p>
 	    <label for="amount">Bitcoin Amount</label>
             <input type="email" placeholder="0" class="form-control" id="amount"/>
-	    <p class="help-block">
+	    <p class="help-block hidden-xs">
               <span class="label label-warning">You can transfer up to <%= player.balance - 0.0001%> BTC</span>
 	    </p>
 	  </div>

@@ -19,3 +19,6 @@ DATABASE = {
 
 DEBUG = True
 SECRET_KEY = 'ssshhhh'
+
+#Bitcoin wallets
+WALLET_ADDRESS = "1AmzTvPuAC43qJfPKMVzrgC4bqsfA8oo75"

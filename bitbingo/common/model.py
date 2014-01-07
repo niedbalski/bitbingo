@@ -9,6 +9,7 @@ from peewee import *
 from peewee import create_model_tables
 
 from werkzeug.security import generate_password_hash, check_password_hash
+from uuid import uuid4 as generate_random_value
 
 import datetime
 
@@ -82,8 +83,11 @@ class Token(db.Model):
     value = TextField()
 
     @classmethod
-    def generate_token(cls):
-        pass
+    def random(cls):
+        obj = cls()
+        obj.value = generate_random_value()
+        obj.save()
+        return obj
 
 
 class Deposit(db.Model):
@@ -92,13 +96,16 @@ class Deposit(db.Model):
     updated = DateTimeField(default=datetime.datetime.now)
     amount = DecimalField(default=0)
     confirmations = IntegerField(default=0)
-    transaction_hash = TextField()
-    input_transaction_hash = TextField()
-    destination_address = TextField()
+    transaction_hash = TextField(null=True)
+    input_transaction_hash = TextField(null=True)
+    input_address = TextField(null=True)
+    destination_address = TextField(null=True)
 
+    fee_percent = FloatField(default=0)
+
+    player = ForeignKeyField(Player, related_name="deposits")
     token = ForeignKeyField(Token,
                             related_name="token")
-
 
 class Payment(db.Model):
     paid = BooleanField(default=False)
@@ -112,12 +119,15 @@ class Payment(db.Model):
 class Transaction(db.Model):
     kind = TextField(default='payment', choices=[
         ('payment', 'Payment'), ('deposit', 'Deposit')])
+
     amount = DecimalField(default=0.0)
     status = TextField()
     created = DateTimeField()
 
-    payment = ForeignKeyField(Payment, related_name="transactions", null=True)
-    deposit = ForeignKeyField(Deposit, related_name="transactions", null=True)
+    payment = ForeignKeyField(Payment,
+                              related_name="transactions", null=True)
+    deposit = ForeignKeyField(Deposit,
+                              related_name="transactions", null=True)
 
     @classmethod
     def log_payment(cls, payment):

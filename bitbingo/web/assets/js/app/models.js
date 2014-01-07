@@ -1,4 +1,4 @@
-define(['backbone', 'underscore'], function(Backbone, _) {
+define(['backbone', 'underscore', 'jquery'], function(Backbone, _, $) {
 
     var models = {};
 
@@ -19,6 +19,25 @@ define(['backbone', 'underscore'], function(Backbone, _) {
 
         parse: function(response) {
             return response.results;
+        }
+    });
+
+    models.Deposit = Backbone.Model.extend({
+        url: '/api/v1/deposit',
+        schema: {
+            amount: {
+                type: "Number",
+                validators: [ 'required', function(value) {
+                    if ( !$.isNumeric(value) || 0.001 > value) {
+                        return {
+                            type: "amount",
+                            message: "Enter a numeric value greater than 0.001"
+                        }
+                    }
+                } ],
+
+                help: "Enter a bitcoin amount to be deposited"
+            }
         }
     });
 

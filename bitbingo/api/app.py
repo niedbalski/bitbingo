@@ -3,20 +3,24 @@
 
 __author__ = 'Jorge Niedbalski R. <jnr@pyrosome.org>'
 
-import re
-import json
-
-from bitbingo.common.model import Game, Player
 from bitbingo.common.app import app
+from bitbingo.common.model import (Game,
+                                   Player,
+                                   Deposit,
+                                   Token)
 
 from flask.ext.login import (login_required, current_user, login_user,
                              logout_user)
-
 from flask.ext.restful import (Resource, Api, marshal_with, fields,
                                marshal_with,
                                marshal, abort)
-
 from flask.ext.restful import reqparse
+
+import re
+import json
+import requests
+import urllib
+
 
 api = Api(app, prefix="/api/v1")
 
@@ -60,12 +64,10 @@ def wallet_is_valid(value, name, *args):
     if Player.select().where(Player.wallet == value).count() > 0:
         raise FieldValueError(name,
                               "Bitcoin wallet already is used by another user")
-
     return value
 
 
 class AuthResource(Resource):
-
     player_fields = {
         'id': fields.Integer,
         'created': fields.DateTime,
@@ -79,13 +81,11 @@ class AuthResource(Resource):
         parser.add_argument("wallet",
                             type=str,
                             required=True)
-
         parser.add_argument("password",
                             type=str,
                             required=True)
 
         args = parser.parse_args()
-
         try:
             player = Player.login(args.get('wallet'), args.get('password'))
         except:
@@ -95,8 +95,53 @@ class AuthResource(Resource):
         return player
 
 
-class PlayerResource(Resource):
+class DepositResource(Resource):
+    deposit_to_fields = {
+        'ready': fields.String(attribute='paid'),
+        'amount': fields.Float,
+        'address': fields.String(attribute="input_address")
+    }
 
+    def generate_wallet(self, token):
+        parameters = {
+            "method": "create",
+            "address": app.config.get("WALLET_ADDRESS"),
+            "callback": "http://bitbi.io/api/v1/deposit?token=%s" % token.value
+        }
+
+        result = requests.get(
+            "https://blockchain.info/api/receive?%s" %
+            urllib.urlencode(parameters))
+
+        if not result.status_code in (200, ):
+            raise Exception('Invalid response code %s' % result.status_code)
+
+        return result.json()
+
+    @login_required
+    @marshal_with(deposit_to_fields)
+    def post(self, *args, **kwargs):
+        parser = reqparse.RequestParser()
+        parser.add_argument("amount",
+                            type=str,
+                            required=True)
+        args = parser.parse_args()
+
+        deposit = Deposit()
+        deposit.amount = args.get('amount', 0.0)
+        deposit.token = Token.random()
+        deposit.player = current_user.id
+
+        wallet = self.generate_wallet(deposit.token)
+
+        deposit.fee_percent = wallet.get('fee_percent', 0.0)
+        deposit.input_address = wallet.get('input_address')
+
+        deposit.save()
+        return deposit
+
+
+class PlayerResource(Resource):
     player_fields = {
         'id': fields.Integer,
         'created': fields.DateTime,
@@ -107,7 +152,7 @@ class PlayerResource(Resource):
     @marshal_with(player_fields)
     def get(self):
         if not current_user.is_authenticated():
-            return abort(403)
+            return app.login_manager.unauthorized()
         return current_user
 
     def delete(self):
@@ -178,5 +223,6 @@ class ResultsResource(Resource):
 
 api.add_resource(ResultsResource, '/result')
 api.add_resource(PlayerResource, '/player')
+api.add_resource(DepositResource, '/deposit')
 api.add_resource(AuthResource, '/player/login',
                  methods=['POST', 'DELETE'])

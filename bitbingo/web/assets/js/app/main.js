@@ -11,9 +11,7 @@ define(["jquery",
                     'app/controllers'],
 
                    function(models, views, controllers) {
-                       
                        Application = {};
-
                        Application.controllers = [
                            controllers.HomeController
                        ];
@@ -22,7 +20,8 @@ define(["jquery",
                            $(document).ready(function() {
                                $('.nav li').click(function() {
                                    if(!$(this).hasClass('active')) {
-                                       $('.nav .active').removeClass('active') && $(this).addClass('active');
+                                       $('.nav .active').removeClass('active');
+                                       $(this).addClass('active');
                                    }
                                });
 
@@ -31,7 +30,7 @@ define(["jquery",
                            _.each(this.controllers, function(controller) {
                                _.extend(controllers.BaseController, controller).initialize();
                            });
-                       }
+                       };
 
                        Application.initialize();
                    }

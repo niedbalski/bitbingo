@@ -34,7 +34,7 @@ define(['backbone',
                 }
             }
 
-            r = Backbone.Router.extend({
+            var r = Backbone.Router.extend({
                 routes:routes
             });
 
@@ -122,7 +122,7 @@ define(['backbone',
                     loginRequired: true,
                     handler: this.logout
                 }
-            }
+            };
         },
 
         transactions: function(player) {
@@ -136,9 +136,15 @@ define(['backbone',
                 model: player
             });
 
+            var badge = new views.Badge({
+                model: player
+            });
+
             var balance = new views.Balance({
                 model: player
             });
+
+            badge.render();
         },
 
         support: function(player) {
@@ -146,7 +152,7 @@ define(['backbone',
         },
 
         logout: function(player) {
-            var player = this.isLogged();
+            var playerisLogged = this.isLogged();
 
             if ( _.isNull(player) || _.isUndefined(player) || player === false ) {
                 return this.router.navigate('', {

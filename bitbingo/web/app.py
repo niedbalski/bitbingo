@@ -54,7 +54,7 @@ class SignupForm(Form):
                                           validators=[
                                               validators.required(),
                                               validators.EqualTo('password',
-                                                message='Passwords mismatch')
+                                                                message='Passwords mismatch')
                                           ])
 
     password = PasswordField('Repeat Password')

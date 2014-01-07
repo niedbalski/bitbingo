@@ -1,10 +1,15 @@
-define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify'],
-       function(Backbone, _, $) {
+define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify', 'app/models'],
+       function(Backbone, _, $, cookies, pnotify, models) {
 
     views = {};
     views.Balance = Backbone.View.extend({
         el: $('#content'),
+
         template: _.template($("#account-container").html()),
+
+        events: {
+            "click #deposit-btn": "deposit"
+        },
 
         initialize: function() {
             $('#balance-btn').remove();
@@ -18,7 +23,44 @@ define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify'],
                 })
             );
 
-            $(this.el).show();
+            this.form = new Backbone.Form({
+                model: new models.Deposit(),
+                template: _.template($('#deposit-form').html()),
+                fieldClass: 'form-control'
+            });
+
+            $('#deposit').html(
+                this.form.render().el
+            );
+
+            //$(this.el).show();
+        },
+
+        deposit: function(event) {
+            event.preventDefault();
+            var errors = this.form.commit({ validate: true });
+
+            if(_.isEmpty(errors) || _.isNull(errors) || _.isUndefined(errors)) {
+                var deposit = this.form.model.save();
+                deposit.success(function(model, response) {
+                    $.pnotify({
+                        title: 'Your deposit is pending',
+                        text: 'Please transfer  <strong>' + model.amount + '</strong> BTC to the following wallet address: <br><strong>' + model.address + '</strong>',
+                        type: 'info',
+                        icon: 'picon picon-document-encrypt'
+                    });
+                });
+            }
+
+            console.log(errors);
+
+            // var errors = this.form.commit({validate: true});
+            // console.log(errors);
+
+            // if ( ! errors ) {
+            //     var deposit = self.form.model.save();
+
+            // }
         }
     });
 
@@ -117,6 +159,7 @@ define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify'],
             });
 
             $('#players').empty();
+
             $(this.el).empty().html(this.form.render().el);
             $(this.el).show();
         },
@@ -145,7 +188,7 @@ define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify'],
                     self.controller.router.navigate('', {trigger: true});
                 }).fail(function(){
                     console.warn('Login Error');
-                    self.form.fields['password'].setError(
+                    self.form.fields.password.setError(
                         "Invalid provided credentials. Try again");
                 });
 
@@ -200,7 +243,8 @@ define(['backbone', 'underscore', 'jquery', 'jquery.cookie', 'jquery.pnotify'],
                 });
 
                 player.error(function(response) {
-                    var fields = JSON.parse(response.responseJSON.message)
+                    var fields = JSON.parse(response.responseJSON.message);
+
                     if ( !_.isEmpty(fields) ) {
                         self.form.fields[fields.field].setError(fields.value);
                     }
